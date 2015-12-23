@@ -66,9 +66,9 @@
 
 </h:head>
 <h:body styleClass="page-header-fixed">
-<!--	<f:event listener="#{templateController.checkIsNotLogin()}"
-		type="preRenderView"></f:event>
-		  -->
+	<f:event listener="#{loginController.checkIsNotLogin()}" type="preRenderView"></f:event>
+	<f:event listener="#{templateController.init()}" type="preRenderView"></f:event>
+
 	<div class="overlay"></div>
 	<form class="search-form" action="#" method="get">
 		<div class="input-group">
@@ -207,13 +207,11 @@
 									class="fa fa-search"></i></a></li>
 							<li class="dropdown"><a href="#"
 								class="dropdown-toggle waves-effect waves-button waves-classic"
-								data-toggle="dropdown"> <span class="user-name">Phước<i
-										class="fa fa-angle-down"></i></span> <img class="img-circle avatar"
-									src="assets/images/avatar1.png" width="40" height="40" alt="" /></a>
+								data-toggle="dropdown"> <span class="user-name">#{templateController.staff.name}<i
+										class="fa fa-angle-down"></i></span></a>
 								<ul class="dropdown-menu dropdown-list" role="menu">
-									<li role="presentation"><h:link
-											outcome="#{profileController.linkProfile()}">
-											<i class="fa fa-user"></i>Profile</h:link></li>
+									<li role="presentation"><a href="profile.xhtml">
+											<i class="fa fa-user"></i>Profile</a></li>
 									<li role="presentation"><a href="calendar.html"><i
 											class="fa fa-calendar"></i>Calendar</a></li>
 									<li role="presentation"><a href="inbox.html"><i
@@ -226,13 +224,13 @@
 											class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
 								</ul></li>
 							<li>
-								<a href="login.html"
+								<!-- <a href="login.html"
 							class="log-out waves-effect waves-button waves-classic"> <span><i
 									class="fa fa-sign-out m-r-xs"></i>Log out</span>
-						</a><!-- <h:commandLink action="#{loginController.logout()}"
+						</a> --> <h:commandLink action="#{loginController.logout()}"
 									styleClass="log-out waves-effect waves-button waves-classic">
 									<span><i class="fa fa-sign-out m-r-xs"></i>Log out</span>
-								</h:commandLink> --> 
+								</h:commandLink>
 							</li>
 						</ul>
 					</h:form>
