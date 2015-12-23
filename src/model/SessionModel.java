@@ -13,8 +13,7 @@ public class SessionModel {
 
 	public static void redirect(String url) {
 		try {
-			externalContext
-.redirect(externalContext.getRequestContextPath()+ url);
+			externalContext.redirect(externalContext.getRequestContextPath() + url);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("catch redirect()");
@@ -24,8 +23,7 @@ public class SessionModel {
 	public static void reLoadPage() {
 		try {
 			SessionModel.externalContext.redirect(SessionModel.externalContext.getApplicationContextPath()
-					+ SessionModel.externalContext.getRequestServletPath()
-					+ SessionModel.externalContext.getRequestPathInfo());
+					+ SessionModel.externalContext.getRequestServletPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

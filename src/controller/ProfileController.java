@@ -30,9 +30,18 @@ public class ProfileController implements Serializable {
 	private String newPass;
 	private String rePass;
 	private String displayChangeInfo = "none";
+	private String displayChangeInfoFalse = "none";
 	private String displayPassInvalid = "none";
 	private String displayChangePass = "none";
 	private String displayPassComfirm = "none";
+
+	public String getDisplayChangeInfoFalse() {
+		return displayChangeInfoFalse;
+	}
+
+	public void setDisplayChangeInfoFalse(String displayChangeInfoFalse) {
+		this.displayChangeInfoFalse = displayChangeInfoFalse;
+	}
 
 	public String getDisplayPassInvalid() {
 		return displayPassInvalid;
@@ -99,6 +108,17 @@ public class ProfileController implements Serializable {
 	}
 
 	public void Init() {
+		if (SessionModel.sessionMap.get("user") != null) {
+			staff = (Staff) SessionModel.sessionMap.get("user");
+			_staff.setEmail(staff.getEmail());
+			_staff.setId(staff.getId());
+			_staff.setName(staff.getName());
+			_staff.setPassword(staff.getPassword());
+			_staff.setRole(staff.getRole());
+			_staff.setStatus(staff.getStatus());
+			_staff.setId(staff.getId());
+			_staff.setAddress(staff.getAddress());
+		}
 		if (SessionModel.sessionMap.get("user") != null)
 			staff = (Staff) SessionModel.sessionMap.get("user");
 
@@ -107,6 +127,12 @@ public class ProfileController implements Serializable {
 			this.displayChangeInfo = "block";
 		} else
 			this.displayChangeInfo = "none";
+
+		if (SessionModel.sessionMap.get("changeinfofalse") != null) {
+			SessionModel.sessionMap.put("changeinfofalse", null);
+			this.displayChangeInfoFalse = "block";
+		} else
+			this.displayChangeInfoFalse = "none";
 
 		if (SessionModel.sessionMap.get("changepass") != null) {
 			SessionModel.sessionMap.put("changepass", null);
@@ -134,36 +160,38 @@ public class ProfileController implements Serializable {
 			staffModel.update(_staff);
 			SessionModel.sessionMap.put("user", _staff);
 			SessionModel.sessionMap.put("changeinfo", true);
-
 			SessionModel.reLoadPage();
-			System.out.println(SessionModel.externalContext.getApplicationContextPath() + "-------------"
-					+ SessionModel.externalContext.getRequestServletPath() + "-------------"
-					+ SessionModel.externalContext.getRequestPathInfo());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Catch Save");
+
+			SessionModel.sessionMap.put("changeinfofalse", true);
 		}
 	}
 
 	public void saveChangePass() {
-		// if (!staff.getPassword().equals(Hash.getHashMD5(pass))) {
-		// SessionModel.sessionMap.put("pass", true);
-		// SessionModel.reLoadPage();
-		// } else if (!newPass.equals(rePass)) {
-		// SessionModel.sessionMap.put("passcfm", true);
-		// SessionModel.reLoadPage();
-		// } else {
-		// EmployeesModel employeesModel = new EmployeesModel();
-		// emp.setPassword(Hash.getHashMD5(newPass));
-		// employeesModel.update(emp);
-		// SessionModel.sessionMap.put("user", emp);
-		// SessionModel.sessionMap.put("changepass", true);
-		// SessionModel.reLoadPage();
-		// }
+		if (!staff.getPassword().equals(Hash.getHashMD5(pass))) {
+			SessionModel.sessionMap.put("pass", true);
+			SessionModel.reLoadPage();
+		} else if (!newPass.equals(rePass)) {
+			SessionModel.sessionMap.put("passcfm", true);
+			SessionModel.reLoadPage();
+		} else {
+			StaffModel staffModel = new StaffModel();
+			_staff.setPassword(Hash.getHashMD5(newPass));
+			staffModel.update(_staff);
+			SessionModel.sessionMap.put("user", _staff);
+			SessionModel.sessionMap.put("changepass", true);
+			SessionModel.reLoadPage();
+		}
 	}
 
 	public ProfileController() {
+		System.out.println("ProfileController");
+	}
+
+	private void info() {
 		if (SessionModel.sessionMap.get("user") != null) {
 			staff = (Staff) SessionModel.sessionMap.get("user");
 			_staff.setEmail(staff.getEmail());
@@ -175,7 +203,6 @@ public class ProfileController implements Serializable {
 			_staff.setId(staff.getId());
 			_staff.setAddress(staff.getAddress());
 		}
-		System.out.println("ProfileController");
 	}
 
 	public String linkProfile() {

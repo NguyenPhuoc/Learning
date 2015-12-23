@@ -62,8 +62,10 @@
 									<h:message for="name" />
 								</div>
 							</div>
-							<!-- ====================== --><div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Address </label>
+							<!-- ====================== -->
+							<div class="form-group">
+								<label for="input-placeholder" class="col-sm-2 control-label">Address
+								</label>
 								<div class="col-sm-10">
 									<h:inputText value="#{profileController._staff.address}"
 										pt:placeholder="#{profileController.staff.address}"
@@ -82,6 +84,10 @@
 									<div class="alert alert-success"
 										style="width: 350px; display: #{profileController.displayChangeInfo}">
 										<b>Save change successfully</b>
+									</div>
+									<div class="alert alert-danger"
+										style="width: 350px; display: #{profileController.displayChangeInfoFalse}">
+										<b>Save change fail</b>
 									</div>
 								</div>
 							</div>
@@ -151,8 +157,7 @@
 								<div class="col-sm-10">
 									<h:commandButton action="#{profileController.saveChangePass()}"
 										value="Change password" styleClass="btn btn-info" />
-									<br />
-									<br />
+									<br /> <br />
 									<div class="alert alert-success"
 										style="width: 350px; display: #{profileController.displayChangePass}">
 										<b>Change password successfully</b>
