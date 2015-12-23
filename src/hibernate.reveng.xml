@@ -5,7 +5,6 @@
   <table-filter match-catalog="learning" match-name="assignment"/>
   <table-filter match-catalog="learning" match-name="course"/>
   <table-filter match-catalog="learning" match-name="courseregister"/>
-  <table-filter match-catalog="learning" match-name="faculty"/>
   <table-filter match-catalog="learning" match-name="faq"/>
   <table-filter match-catalog="learning" match-name="feedback"/>
   <table-filter match-catalog="learning" match-name="perform"/>

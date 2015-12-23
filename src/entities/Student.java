@@ -1,5 +1,5 @@
 package entities;
-// Generated Dec 22, 2015 4:16:46 PM by Hibernate Tools 4.3.1.Final
+// Generated Dec 23, 2015 8:10:44 AM by Hibernate Tools 4.3.1.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -8,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,12 +21,12 @@ import javax.persistence.TemporalType;
 public class Student implements java.io.Serializable {
 
 	private String id;
-	private Faculty faculty;
 	private String password;
 	private String name;
 	private Date dob;
 	private String address;
 	private String email;
+	private String faculty;
 	private int status;
 	private Set<Perform> performs = new HashSet<Perform>(0);
 	private Set<Courseregister> courseregisters = new HashSet<Courseregister>(0);
@@ -36,27 +34,27 @@ public class Student implements java.io.Serializable {
 	public Student() {
 	}
 
-	public Student(String id, Faculty faculty, String password, String name, Date dob, String address, String email,
+	public Student(String id, String password, String name, Date dob, String address, String email, String faculty,
 			int status) {
 		this.id = id;
-		this.faculty = faculty;
 		this.password = password;
 		this.name = name;
 		this.dob = dob;
 		this.address = address;
 		this.email = email;
+		this.faculty = faculty;
 		this.status = status;
 	}
 
-	public Student(String id, Faculty faculty, String password, String name, Date dob, String address, String email,
+	public Student(String id, String password, String name, Date dob, String address, String email, String faculty,
 			int status, Set<Perform> performs, Set<Courseregister> courseregisters) {
 		this.id = id;
-		this.faculty = faculty;
 		this.password = password;
 		this.name = name;
 		this.dob = dob;
 		this.address = address;
 		this.email = email;
+		this.faculty = faculty;
 		this.status = status;
 		this.performs = performs;
 		this.courseregisters = courseregisters;
@@ -71,16 +69,6 @@ public class Student implements java.io.Serializable {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_Faculty", nullable = false)
-	public Faculty getFaculty() {
-		return this.faculty;
-	}
-
-	public void setFaculty(Faculty faculty) {
-		this.faculty = faculty;
 	}
 
 	@Column(name = "Password", nullable = false, length = 32)
@@ -127,6 +115,15 @@ public class Student implements java.io.Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Column(name = "Faculty", nullable = false, length = 50)
+	public String getFaculty() {
+		return this.faculty;
+	}
+
+	public void setFaculty(String faculty) {
+		this.faculty = faculty;
 	}
 
 	@Column(name = "Status", nullable = false)
