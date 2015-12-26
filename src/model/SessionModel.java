@@ -41,4 +41,8 @@ public class SessionModel {
 	public static String params(Object key) {
 		return params.get(key);
 	}
+
+	public static boolean isPostback() {
+		return FacesContext.getCurrentInstance().isPostback();
+	}
 }

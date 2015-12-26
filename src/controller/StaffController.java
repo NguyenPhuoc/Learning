@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.jsoup.Jsoup;
 
@@ -19,49 +20,52 @@ import model.StaffModel;
 @SessionScoped
 public class StaffController {
 	public void init() {
-		String paramAdd = SessionModel.params("add");
-		if (paramAdd != null && paramAdd.equalsIgnoreCase("staff")) {
-			tableTag = "none";
-			divAdd = "block";
-		} else {
-			staffs = new StaffModel().findStaff();
-			tableTag = "block";
-			divAdd = "none";
+		System.out.println("StaffController.init()");
+		if (!SessionModel.isPostback()) {
+			String paramAdd = SessionModel.params("add");
+			if (paramAdd != null && paramAdd.equalsIgnoreCase("staff")) {
+				tableTag = "none";
+				divAdd = "block";
+			} else {
+				staffs = new StaffModel().findStaff();
+				tableTag = "block";
+				divAdd = "none";
+			}
+			divEdit = "none";
+			String paramEdit = SessionModel.params.get("edit");
+			if (paramEdit != null) {
+				staff = new StaffModel().find(paramEdit);
+				if (staff != null && staff.getRole().getId() != 1)
+					divEdit = "block";
+				if (staff.getPerforms().size() == 0)
+					btnDel = "initial";
+				else
+					btnDel = "none";
+			}
+			if (SessionModel.sessionMap.get("editSuc") != null) {
+				SessionModel.sessionMap.put("editSuc", null);
+				this.aletSuc = "block";
+			} else
+				this.aletSuc = "none";
+
+			if (SessionModel.sessionMap.get("editErr") != null) {
+				SessionModel.sessionMap.put("editErr", null);
+				this.aletErr = "block";
+			} else
+				this.aletErr = "none";
+
+			if (SessionModel.get("addSuc") != null) {
+				SessionModel.put("addSuc", null);
+				addSuc = "block";
+			} else
+				addSuc = "none";
+
+			if (SessionModel.get("addErr") != null) {
+				SessionModel.put("addErr", null);
+				addErr = "block";
+			} else
+				addErr = "none";
 		}
-		divEdit = "none";
-		String paramEdit = SessionModel.params.get("edit");
-		if (paramEdit != null) {
-			staff = new StaffModel().find(paramEdit);
-			if (staff != null && staff.getRole().getId() != 1)
-				divEdit = "block";
-			if (staff.getPerforms().size() == 0)
-				btnDel = "initial";
-			else
-				btnDel = "none";
-		}
-		if (SessionModel.sessionMap.get("editSuc") != null) {
-			SessionModel.sessionMap.put("editSuc", null);
-			this.aletSuc = "block";
-		} else
-			this.aletSuc = "none";
-
-		if (SessionModel.sessionMap.get("editErr") != null) {
-			SessionModel.sessionMap.put("editErr", null);
-			this.aletErr = "block";
-		} else
-			this.aletErr = "none";
-
-		if (SessionModel.get("addSuc") != null) {
-			SessionModel.put("addSuc", null);
-			addSuc = "block";
-		} else
-			addSuc = "none";
-
-		if (SessionModel.get("addErr") != null) {
-			SessionModel.put("addErr", null);
-			addErr = "block";
-		} else
-			addErr = "none";
 	}
 
 	private List<Staff> staffs;

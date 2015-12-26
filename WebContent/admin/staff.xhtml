@@ -98,7 +98,8 @@
 									<h:inputText value="#{staffController.staff.email}"
 										pt:placeholder="#{staffController.staff.email}"
 										styleClass="form-control" maxlength="254" pt:type="email"
-										required="true" requiredMessage="Invalid email" id="email">
+										required="true" requiredMessage="Invalid email" id="email"
+										validatorMessage="Invalid email">
 										<f:validateRegex pattern="#{regular.regexEmail}" />
 										<f:validateLength maximum="254" />
 									</h:inputText>
@@ -184,7 +185,8 @@
 								<div class="col-sm-10">
 									<h:inputText value="#{staffController.newPass}" required="true"
 										requiredMessage="Invalid password" id="newPass"
-										styleClass="form-control" maxlength="32">
+										styleClass="form-control" maxlength="32" autocomplete="off"
+										validatorMessage="Password invalid, the shortest is 6 characters.">
 										<f:validateLength maximum="32" minimum="6" />
 									</h:inputText>
 									<h:message for="newPass" />
@@ -195,15 +197,17 @@
 								<label for="input-placeholder" class="col-sm-2 control-label"></label>
 								<div class="col-sm-10">
 									<h:commandButton action="#{staffController.changePass()}"
-										value="Change password" styleClass="btn btn-info" />
+										value="Change password" styleClass="btn btn-info" >
+										<f:ajax execute="@form" render="@form" />
+										</h:commandButton>
 									<br /> <br />
 									<div class="alert alert-success"
 										style="width: 350px; display: #{staffController.aletSuc}">
-										<b>Save change successfully</b>
+										<b>Change password successfully</b>
 									</div>
 									<div class="alert alert-danger"
 										style="width: 350px; display: #{staffController.aletErr}">
-										<b>Save change failed</b>
+										<b>Change password failed</b>
 									</div>
 								</div>
 							</div>
