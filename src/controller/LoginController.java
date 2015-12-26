@@ -44,29 +44,30 @@ public class LoginController {
 				SessionModel.redirect("/admin/index.xhtml");
 	}
 
-	public String login() {
+	public void login() {
 		System.out.println("Login");
 		try {
 			Staff staff = new StaffModel().login(this.staff);
 
-			if (staff != null) {
+			if (staff != null && staff.getStatus() == 1) {
 				SessionModel.sessionMap.put("user", staff);
-				return "/admin/index?faces-redirect=true";
+				//return "/admin/index?faces-redirect=true";
+				SessionModel.redirect("/admin/index.xhtml");
 			} else {
 				this.notice = "Username or password invalid";
 				this.staff.setPassword(null);
-				return null;
+				//return null;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			return null;
+			//return null;
 		}
 	}
 
-	public String logout() {
+	public void logout() {
 		staff = new Staff();
 		this.notice = null;
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return "/admin/login?faces-redirect=true";
+		SessionModel.redirect("/admin/login.xhtml");
 	}
 }

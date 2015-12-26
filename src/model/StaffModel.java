@@ -44,4 +44,20 @@ public class StaffModel extends AbstractModel<Staff> {
 			return null;
 		}
 	}
+
+	@Override
+	public void create(Staff staff) {
+		staff.setRole(new RoleModel().find(2));
+		staff.setStatus(1);
+		staff.setPassword(Hash.getHashMD5(staff.getPassword()));
+		super.create(staff);
+		SessionModel.sessionMap.put("addSuc", true);
+	}
+
+	public void changePass(Staff staff, String newPass) {
+		staff = super.find(staff.getId());
+		staff.setPassword(Hash.getHashMD5(newPass));
+		super.update(staff);
+	}
+
 }

@@ -29,4 +29,16 @@ public class SessionModel {
 		}
 		System.out.println("catch reLoadPage()");
 	}
+
+	public static Object get(Object key) {
+		return sessionMap.get(key);
+	}
+
+	public static Object put(String key, Object value) {
+		return sessionMap.put(key, value);
+	}
+
+	public static String params(Object key) {
+		return params.get(key);
+	}
 }
