@@ -1,9 +1,10 @@
 package controller;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 import javax.faces.bean.*;
+
+import org.jsoup.Jsoup;
 
 import entities.Staff;
 import model.Hash;
@@ -156,10 +157,25 @@ public class ProfileController implements Serializable {
 
 	public void saveChangeInfo() {
 		try {
-			StaffModel staffModel = new StaffModel();
-			staffModel.update(_staff);
-			SessionModel.sessionMap.put("user", _staff);
-			SessionModel.sessionMap.put("changeinfo", true);
+			if (Jsoup.parse(_staff.getEmail()).text().length() == 0
+					|| Jsoup.parse(_staff.getName()).text().length() == 0
+					|| Jsoup.parse(_staff.getAddress()).text().length() == 0) {
+
+				SessionModel.sessionMap.put("changeinfofalse", true);
+			} else if (Jsoup.parse(_staff.getEmail()).text().length() > 254
+					|| Jsoup.parse(_staff.getName()).text().length() > 50
+					|| Jsoup.parse(_staff.getAddress()).text().length() > 100) {
+
+				SessionModel.sessionMap.put("changeinfofalse", true);
+			} else {
+				_staff.setAddress(Jsoup.parse(_staff.getAddress()).text());
+				_staff.setEmail(Jsoup.parse(_staff.getEmail()).text());
+				_staff.setName(Jsoup.parse(_staff.getName()).text());
+				StaffModel staffModel = new StaffModel();
+				staffModel.update(_staff);
+				SessionModel.sessionMap.put("user", _staff);
+				SessionModel.sessionMap.put("changeinfo", true);
+			}
 			SessionModel.reLoadPage();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
