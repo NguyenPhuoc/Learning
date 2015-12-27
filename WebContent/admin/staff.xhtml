@@ -114,7 +114,8 @@
 									<h:inputText value="#{staffController.staff.name}"
 										pt:placeholder="#{staffController.staff.name}" required="true"
 										requiredMessage="Invalid name" id="name"
-										styleClass="form-control" maxlength="50">
+										styleClass="form-control" maxlength="50"
+										validatorMessage="Invalid name">
 										<f:validateLength maximum="50" />
 										<f:validateRegex pattern="#{regular.regexName}" />
 									</h:inputText>
@@ -130,7 +131,8 @@
 									<h:inputText value="#{staffController.staff.address}"
 										pt:placeholder="#{staffController.staff.address}"
 										required="true" requiredMessage="Invalid name" id="address"
-										styleClass="form-control" maxlength="100">
+										styleClass="form-control" maxlength="100"
+										validatorMessage="Invalid address">
 										<f:validateLength maximum="100" />
 										<f:validateRegex pattern="#{regular.regexAddress}" />
 									</h:inputText>
@@ -143,7 +145,7 @@
 								</label>
 								<div class="col-sm-10">
 									<h:selectOneListbox value="#{staffController.staff.status}"
-										id="status">
+										id="status" styleClass="form-control" style="width:120px">
 										<f:selectItem itemLabel="Active" itemValue="1" />
 										<f:selectItem itemLabel="Block" itemValue="0" />
 									</h:selectOneListbox>
@@ -154,7 +156,9 @@
 								<label for="input-placeholder" class="col-sm-2 control-label"></label>
 								<div class="col-sm-10">
 									<h:commandButton action="#{staffController.saveChange()}"
-										value="Save change" styleClass="btn btn-info" />
+										value="Save change" styleClass="btn btn-info">
+										<f:ajax execute="@form" render="@form" />
+									</h:commandButton>
 									<span style="padding: 10px;"></span>
 									<h:commandButton
 										action="#{staffController.deleteThisStaff(staffController.staff)}"
@@ -197,16 +201,16 @@
 								<label for="input-placeholder" class="col-sm-2 control-label"></label>
 								<div class="col-sm-10">
 									<h:commandButton action="#{staffController.changePass()}"
-										value="Change password" styleClass="btn btn-info" >
+										value="Change password" styleClass="btn btn-info">
 										<f:ajax execute="@form" render="@form" />
-										</h:commandButton>
+									</h:commandButton>
 									<br /> <br />
 									<div class="alert alert-success"
-										style="width: 350px; display: #{staffController.aletSuc}">
+										style="width: 350px; display: #{staffController.passSuc}">
 										<b>Change password successfully</b>
 									</div>
 									<div class="alert alert-danger"
-										style="width: 350px; display: #{staffController.aletErr}">
+										style="width: 350px; display: #{staffController.passErr}">
 										<b>Change password failed</b>
 									</div>
 								</div>
@@ -230,7 +234,8 @@
 								<div class="col-sm-10">
 									<h:inputText value="#{staffController._staff.id}"
 										styleClass="form-control" maxlength="32" autocomplete="off"
-										required="true" requiredMessage="Invalid username" id="_ID">
+										required="true" requiredMessage="Invalid username"
+										validatorMessage="Invalid username" id="_ID">
 										<f:validateRegex pattern="^[A-Za-z0-9_-]{1,32}$" />
 									</h:inputText>
 									<h:message for="_ID" />
@@ -242,8 +247,10 @@
 								</label>
 								<div class="col-sm-10">
 									<h:inputText value="#{staffController._staff.password}"
-										required="true" requiredMessage="password Invalid"
-										id="_password" styleClass="form-control" redisplay="true">
+										required="true" requiredMessage="Password Invalid"
+										id="_password" styleClass="form-control" autocomplete="off"
+										validatorMessage="Password invalid, the shortest is 6 characters."
+										redisplay="true">
 										<f:validateLength maximum="32" minimum="6"></f:validateLength>
 									</h:inputText>
 									<h:message for="_password" />
@@ -256,7 +263,8 @@
 								<div class="col-sm-10">
 									<h:inputText value="#{staffController._staff.email}"
 										styleClass="form-control" maxlength="254" pt:type="email"
-										required="true" requiredMessage="Invalid email" id="_email">
+										required="true" requiredMessage="Invalid email"
+										validatorMessage="Invalid email" id="_email">
 										<f:validateRegex pattern="#{regular.regexEmail}" />
 										<f:validateLength maximum="254"></f:validateLength>
 									</h:inputText>
@@ -270,7 +278,8 @@
 								<div class="col-sm-10">
 									<h:inputText value="#{staffController._staff.name}"
 										required="true" requiredMessage="Invalid name" id="_name"
-										styleClass="form-control" maxlength="50">
+										styleClass="form-control" maxlength="50"
+										validatorMessage="Invalid name">
 										<f:validateLength maximum="50"></f:validateLength>
 										<f:validateRegex pattern="#{regular.regexName}" />
 									</h:inputText>
@@ -284,7 +293,8 @@
 								<div class="col-sm-10">
 									<h:inputText value="#{staffController._staff.address}"
 										required="true" requiredMessage="Invalid name" id="_address"
-										styleClass="form-control" maxlength="100">
+										styleClass="form-control" maxlength="100"
+										validatorMessage="Invalid address">
 										<f:validateLength maximum="100"></f:validateLength>
 										<f:validateRegex pattern="#{regular.regexAddress}" />
 									</h:inputText>
@@ -296,7 +306,9 @@
 								<label for="input-placeholder" class="col-sm-2 control-label"></label>
 								<div class="col-sm-10">
 									<h:commandButton action="#{staffController.save()}"
-										value="Save" styleClass="btn btn-info" />
+										value="Save" styleClass="btn btn-info">
+										<f:ajax execute="@form" render="@form"></f:ajax>
+									</h:commandButton>
 									<br /> <br />
 									<div class="alert alert-success"
 										style="width: 350px; display: #{staffController.addSuc}">

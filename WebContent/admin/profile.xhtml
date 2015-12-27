@@ -110,7 +110,7 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row" id="changepass">
 			<div class="col-md-12">
 				<div class="panel panel-white">
 					<div class="panel-heading clearfix">
@@ -126,7 +126,8 @@
 									<h:inputSecret value="#{profileController.pass}"
 										pt:placeholder="old password" id="oldPass" required="true"
 										requiredMessage="Invalid password" styleClass="form-control"
-										maxlength="32" validatorMessage="Invalid password">
+										maxlength="32"
+										validatorMessage="Password invalid, the shortest is 6 characters.">
 										<f:validateLength maximum="32" minimum="6"></f:validateLength>
 									</h:inputSecret>
 									<h:message for="oldPass" />
@@ -140,7 +141,8 @@
 									<h:inputSecret value="#{profileController.newPass}"
 										pt:placeholder="new password" id="newPass" required="true"
 										requiredMessage="Invalid password" styleClass="form-control"
-										maxlength="32" validatorMessage="Invalid password">
+										maxlength="32"
+										validatorMessage="Password invalid, the shortest is 6 characters.">
 										<f:validateLength maximum="32" minimum="6"></f:validateLength>
 									</h:inputSecret>
 									<h:message for="newPass" />
@@ -155,7 +157,7 @@
 										pt:placeholder="confirm new password" id="rePass"
 										required="true" requiredMessage="Invalid password"
 										styleClass="form-control" maxlength="32"
-										validatorMessage="Invalid password">
+										validatorMessage="Password invalid, the shortest is 6 characters.">
 										<f:validateLength maximum="32" minimum="6"></f:validateLength>
 									</h:inputSecret>
 									<h:message for="rePass" />

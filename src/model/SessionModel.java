@@ -26,8 +26,8 @@ public class SessionModel {
 					+ SessionModel.externalContext.getRequestServletPath());
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("catch reLoadPage()");
 		}
-		System.out.println("catch reLoadPage()");
 	}
 
 	public static Object get(Object key) {

@@ -23,16 +23,17 @@ public class StaffController {
 		System.out.println("StaffController.init()");
 		if (!SessionModel.isPostback()) {
 			String paramAdd = SessionModel.params("add");
+			String paramEdit = SessionModel.params("edit");
+			divEdit = "none";
 			if (paramAdd != null && paramAdd.equalsIgnoreCase("staff")) {
 				tableTag = "none";
 				divAdd = "block";
-			} else {
-				staffs = new StaffModel().findStaff();
-				tableTag = "block";
-				divAdd = "none";
-			}
-			divEdit = "none";
-			String paramEdit = SessionModel.params.get("edit");
+			} else
+			// {
+			// staffs = new StaffModel().findStaff();
+			// tableTag = "block";
+			// divAdd = "none";
+			// }
 			if (paramEdit != null) {
 				staff = new StaffModel().find(paramEdit);
 				if (staff != null && staff.getRole().getId() != 1)
@@ -41,6 +42,10 @@ public class StaffController {
 					btnDel = "initial";
 				else
 					btnDel = "none";
+			} else {
+				staffs = new StaffModel().findStaff();
+				tableTag = "block";
+				divAdd = "none";
 			}
 			if (SessionModel.sessionMap.get("editSuc") != null) {
 				SessionModel.sessionMap.put("editSuc", null);
@@ -65,6 +70,19 @@ public class StaffController {
 				addErr = "block";
 			} else
 				addErr = "none";
+
+			// pass change
+			if (SessionModel.get("passSuc") != null) {
+				SessionModel.put("passSuc", null);
+				passSuc = "block";
+			} else
+				passSuc = "none";
+
+			if (SessionModel.get("passErr") != null) {
+				SessionModel.put("passErr", null);
+				passErr = "block";
+			} else
+				passErr = "none";
 		}
 	}
 
@@ -83,6 +101,16 @@ public class StaffController {
 	private String addErr = "none";
 	private String divAdd = "none";
 	private String newPass = "";
+	private String passSuc = "none";
+	private String passErr = "none";
+
+	public String getPassErr() {
+		return passErr;
+	}
+
+	public String getPassSuc() {
+		return passSuc;
+	}
 
 	public void setNewPass(String newPass) {
 		this.newPass = newPass;
@@ -155,6 +183,7 @@ public class StaffController {
 				new StaffModel().update(staff);
 				SessionModel.sessionMap.put("editSuc", true);
 			}
+			staff = new StaffModel().find(staff.getId());
 			SessionModel.redirect("/admin/staff.xhtml?edit=" + staff.getId());
 		} catch (Exception e) {
 			SessionModel.sessionMap.put("editErr", true);
@@ -188,8 +217,11 @@ public class StaffController {
 		try {
 			new StaffModel().changePass(staff, newPass);
 			newPass = "";
+			SessionModel.sessionMap.put("passSuc", true);
+			SessionModel.redirect("/admin/staff.xhtml?edit=" + staff.getId());
 		} catch (Exception e) {
-			// TODO: handle exception
+			SessionModel.sessionMap.put("passErr", true);
+			SessionModel.redirect("/admin/staff.xhtml?edit=" + staff.getId());
 		}
 	}
 }

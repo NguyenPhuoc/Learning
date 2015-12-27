@@ -120,6 +120,7 @@ public class ProfileController implements Serializable {
 			_staff.setId(staff.getId());
 			_staff.setAddress(staff.getAddress());
 		}
+
 		if (SessionModel.sessionMap.get("user") != null)
 			staff = (Staff) SessionModel.sessionMap.get("user");
 
@@ -189,17 +190,20 @@ public class ProfileController implements Serializable {
 	public void saveChangePass() {
 		if (!staff.getPassword().equals(Hash.getHashMD5(pass))) {
 			SessionModel.sessionMap.put("pass", true);
-			SessionModel.reLoadPage();
+			SessionModel.redirect("/admin/profile.xhtml?pas=false#changepass");
+			//SessionModel.reLoadPage();
 		} else if (!newPass.equals(rePass)) {
 			SessionModel.sessionMap.put("passcfm", true);
-			SessionModel.reLoadPage();
+			// SessionModel.reLoadPage();
+			SessionModel.redirect("/admin/profile.xhtml?pass=cfm#changepass");
 		} else {
 			StaffModel staffModel = new StaffModel();
 			_staff.setPassword(Hash.getHashMD5(newPass));
 			staffModel.update(_staff);
 			SessionModel.sessionMap.put("user", _staff);
 			SessionModel.sessionMap.put("changepass", true);
-			SessionModel.reLoadPage();
+//			SessionModel.reLoadPage();
+			SessionModel.redirect("/admin/profile.xhtml?pass=suc#changepass");
 		}
 	}
 
@@ -208,17 +212,18 @@ public class ProfileController implements Serializable {
 	}
 
 	private void info() {
-		if (SessionModel.sessionMap.get("user") != null) {
-			staff = (Staff) SessionModel.sessionMap.get("user");
-			_staff.setEmail(staff.getEmail());
-			_staff.setId(staff.getId());
-			_staff.setName(staff.getName());
-			_staff.setPassword(staff.getPassword());
-			_staff.setRole(staff.getRole());
-			_staff.setStatus(staff.getStatus());
-			_staff.setId(staff.getId());
-			_staff.setAddress(staff.getAddress());
-		}
+		if (!SessionModel.isPostback())
+			if (SessionModel.sessionMap.get("user") != null) {
+				staff = (Staff) SessionModel.sessionMap.get("user");
+				_staff.setEmail(staff.getEmail());
+				_staff.setId(staff.getId());
+				_staff.setName(staff.getName());
+				_staff.setPassword(staff.getPassword());
+				_staff.setRole(staff.getRole());
+				_staff.setStatus(staff.getStatus());
+				_staff.setId(staff.getId());
+				_staff.setAddress(staff.getAddress());
+			}
 	}
 
 	public String linkProfile() {
