@@ -1,23 +1,36 @@
 package controller;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Map;
 
 import javax.faces.bean.*;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import org.jsoup.Jsoup;
 
+import entities.Role;
 import entities.Staff;
 import model.Hash;
-import model.SessionModel;
 import model.StaffModel;
 
 @ManagedBean(name = "profileController")
 @SessionScoped
 public class ProfileController implements Serializable {
+	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	private Map<String, Object> sessionMap = externalContext.getSessionMap();
+	private Map<String, String> params = externalContext.getRequestParameterMap();
+
 	private static final long serialVersionUID = 1L;
 
 	private Staff staff = new Staff();
+	private Role role = new Role();
 	private Staff _staff = new Staff();
+
+	public Role getRole() {
+		return role;
+	}
 
 	public Staff get_staff() {
 		return _staff;
@@ -109,8 +122,8 @@ public class ProfileController implements Serializable {
 	}
 
 	public void Init() {
-		if (SessionModel.sessionMap.get("user") != null) {
-			staff = (Staff) SessionModel.sessionMap.get("user");
+		if (sessionMap.get("user") != null) {
+			staff = (Staff) sessionMap.get("user");
 			_staff.setEmail(staff.getEmail());
 			_staff.setId(staff.getId());
 			_staff.setName(staff.getName());
@@ -121,35 +134,35 @@ public class ProfileController implements Serializable {
 			_staff.setAddress(staff.getAddress());
 		}
 
-//		if (SessionModel.sessionMap.get("user") != null)
-//			staff = (Staff) SessionModel.sessionMap.get("user");
+		if (sessionMap.get("role") != null)
+			role = (Role) sessionMap.get("role");
 
-		if (SessionModel.sessionMap.get("changeinfo") != null) {
-			SessionModel.sessionMap.put("changeinfo", null);
+		if (sessionMap.get("changeinfo") != null) {
+			sessionMap.put("changeinfo", null);
 			this.displayChangeInfo = "block";
 		} else
 			this.displayChangeInfo = "none";
 
-		if (SessionModel.sessionMap.get("changeinfofalse") != null) {
-			SessionModel.sessionMap.put("changeinfofalse", null);
+		if (sessionMap.get("changeinfofalse") != null) {
+			sessionMap.put("changeinfofalse", null);
 			this.displayChangeInfoFalse = "block";
 		} else
 			this.displayChangeInfoFalse = "none";
 
-		if (SessionModel.sessionMap.get("changepass") != null) {
-			SessionModel.sessionMap.put("changepass", null);
+		if (sessionMap.get("changepass") != null) {
+			sessionMap.put("changepass", null);
 			this.displayChangePass = "block";
 		} else
 			this.displayChangePass = "none";
 
-		if (SessionModel.sessionMap.get("passcfm") != null) {
-			SessionModel.sessionMap.put("passcfm", null);
+		if (sessionMap.get("passcfm") != null) {
+			sessionMap.put("passcfm", null);
 			this.displayPassComfirm = "block";
 		} else
 			this.displayPassComfirm = "none";
 
-		if (SessionModel.sessionMap.get("pass") != null) {
-			SessionModel.sessionMap.put("pass", null);
+		if (sessionMap.get("pass") != null) {
+			sessionMap.put("pass", null);
 			this.displayPassInvalid = "block";
 		} else
 			this.displayPassInvalid = "none";
@@ -162,47 +175,47 @@ public class ProfileController implements Serializable {
 					|| Jsoup.parse(_staff.getName()).text().length() == 0
 					|| Jsoup.parse(_staff.getAddress()).text().length() == 0) {
 
-				SessionModel.sessionMap.put("changeinfofalse", true);
+				sessionMap.put("changeinfofalse", true);
 			} else if (Jsoup.parse(_staff.getEmail()).text().length() > 254
 					|| Jsoup.parse(_staff.getName()).text().length() > 50
 					|| Jsoup.parse(_staff.getAddress()).text().length() > 100) {
 
-				SessionModel.sessionMap.put("changeinfofalse", true);
+				sessionMap.put("changeinfofalse", true);
 			} else {
 				_staff.setAddress(Jsoup.parse(_staff.getAddress()).text());
 				_staff.setEmail(Jsoup.parse(_staff.getEmail()).text());
 				_staff.setName(Jsoup.parse(_staff.getName()).text());
 				StaffModel staffModel = new StaffModel();
 				staffModel.update(_staff);
-				SessionModel.sessionMap.put("user", _staff);
-				SessionModel.sessionMap.put("changeinfo", true);
+				sessionMap.put("user", _staff);
+				sessionMap.put("changeinfo", true);
 			}
-			SessionModel.reLoadPage();
+			// SessionModel.reLoadPage();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Catch Save");
 
-			SessionModel.sessionMap.put("changeinfofalse", true);
+			sessionMap.put("changeinfofalse", true);
 		}
 	}
 
-	public void saveChangePass() {
+	public void saveChangePass() throws IOException {
 		if (!staff.getPassword().equals(Hash.getHashMD5(pass))) {
-			SessionModel.sessionMap.put("pass", true);
-			SessionModel.redirect("profile.xhtml?pas=false#changepass");
+			sessionMap.put("pass", true);
+			externalContext.redirect("profile.xhtml?pas=false#changepass");
 			// SessionModel.reLoadPage();
 		} else if (!newPass.equals(rePass)) {
-			SessionModel.sessionMap.put("passcfm", true);
+			sessionMap.put("passcfm", true);
 			// SessionModel.reLoadPage();
-			SessionModel.redirect("profile.xhtml?pass=cfm#changepass");
+			externalContext.redirect("profile.xhtml?pass=cfm#changepass");
 		} else {
 			StaffModel staffModel = new StaffModel();
 			_staff.setPassword(Hash.getHashMD5(newPass));
 			staffModel.update(_staff);
-			SessionModel.sessionMap.put("user", _staff);
-			SessionModel.sessionMap.put("changepass", true);
+			sessionMap.put("user", _staff);
+			sessionMap.put("changepass", true);
 			// SessionModel.reLoadPage();
-			SessionModel.redirect("profile.xhtml?pass=suc#changepass");
+			externalContext.redirect("profile.xhtml?pass=suc#changepass");
 		}
 	}
 
@@ -212,8 +225,8 @@ public class ProfileController implements Serializable {
 
 	// private void info() {
 	// if (!SessionModel.isPostback())
-	// if (SessionModel.sessionMap.get("user") != null) {
-	// staff = (Staff) SessionModel.sessionMap.get("user");
+	// if (sessionMap.get("user") != null) {
+	// staff = (Staff) sessionMap.get("user");
 	// _staff.setEmail(staff.getEmail());
 	// _staff.setId(staff.getId());
 	// _staff.setName(staff.getName());

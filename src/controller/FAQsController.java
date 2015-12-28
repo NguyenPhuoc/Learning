@@ -2,9 +2,12 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import entities.Faq;
 import model.FaqModel;
@@ -14,10 +17,16 @@ import model.StudentModel;
 @ManagedBean(name = "faqsController")
 @SessionScoped
 public class FAQsController {
+	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	private Map<String, Object> sessionMap = externalContext.getSessionMap();
+	private Map<String, String> params = externalContext.getRequestParameterMap();
+	// private Map<String, Object> sessionMap =
+	// FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+
 	public void init() {
 		if (!SessionModel.isPostback()) {
-			String paramAdd = SessionModel.params("add");
-			String paramEdit = SessionModel.params.get("edit");
+			String paramAdd = params.get("add");
+			String paramEdit = params.get("edit");
 			if (paramAdd != null && paramAdd.equalsIgnoreCase("faq")) {
 				tableTag = "none";
 				divAdd = "block";
@@ -41,26 +50,26 @@ public class FAQsController {
 		}
 		// ===============================
 		// add
-		if (SessionModel.get("addSuc") != null) {
-			SessionModel.put("addSuc", null);
+		if (sessionMap.get("addSuc") != null) {
+			sessionMap.put("addSuc", null);
 			addSuc = "block";
 		} else
 			addSuc = "none";
 
-		if (SessionModel.get("addErr") != null) {
-			SessionModel.put("addErr", null);
+		if (sessionMap.get("addErr") != null) {
+			sessionMap.put("addErr", null);
 			addErr = "block";
 		} else
 			addErr = "none";
 		// edit
-		if (SessionModel.get("editSuc") != null) {
-			SessionModel.put("editSuc", null);
+		if (sessionMap.get("editSuc") != null) {
+			sessionMap.put("editSuc", null);
 			editSuc = "block";
 		} else
 			editSuc = "none";
 
-		if (SessionModel.get("editErr") != null) {
-			SessionModel.put("editErr", null);
+		if (sessionMap.get("editErr") != null) {
+			sessionMap.put("editErr", null);
 			editErr = "block";
 		} else
 			editErr = "none";

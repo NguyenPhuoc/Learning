@@ -51,7 +51,6 @@ public class StaffModel extends AbstractModel<Staff> {
 		staff.setStatus(1);
 		staff.setPassword(Hash.getHashMD5(staff.getPassword()));
 		super.create(staff);
-		SessionModel.sessionMap.put("addSuc", true);
 	}
 
 	public void changePass(Staff staff, String newPass) {

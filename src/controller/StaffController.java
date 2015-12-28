@@ -1,9 +1,13 @@
 package controller;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import org.jsoup.Jsoup;
 
@@ -14,11 +18,15 @@ import model.StaffModel;
 @ManagedBean(name = "staffController")
 @SessionScoped
 public class StaffController {
+	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	private Map<String, Object> sessionMap = externalContext.getSessionMap();
+	private Map<String, String> params = externalContext.getRequestParameterMap();
+
 	public void init() {
 		System.out.println("StaffController.init()");
 		if (!SessionModel.isPostback()) {
-			String paramAdd = SessionModel.params("add");
-			String paramEdit = SessionModel.params("edit");
+			String paramAdd = params.get("add");
+			String paramEdit = params.get("edit");
 
 			if (paramAdd != null && paramAdd.equalsIgnoreCase("staff")) {
 				tableTag = "none";
@@ -44,39 +52,39 @@ public class StaffController {
 				divAdd = "none";
 				divEdit = "none";
 			}
-			if (SessionModel.sessionMap.get("editSuc") != null) {
-				SessionModel.sessionMap.put("editSuc", null);
+			if (sessionMap.get("editSuc") != null) {
+				sessionMap.put("editSuc", null);
 				this.aletSuc = "block";
 			} else
 				this.aletSuc = "none";
 
-			if (SessionModel.sessionMap.get("editErr") != null) {
-				SessionModel.sessionMap.put("editErr", null);
+			if (sessionMap.get("editErr") != null) {
+				sessionMap.put("editErr", null);
 				this.aletErr = "block";
 			} else
 				this.aletErr = "none";
 
-			if (SessionModel.get("addSuc") != null) {
-				SessionModel.put("addSuc", null);
+			if (sessionMap.get("addSuc") != null) {
+				sessionMap.put("addSuc", null);
 				addSuc = "block";
 			} else
 				addSuc = "none";
 
-			if (SessionModel.get("addErr") != null) {
-				SessionModel.put("addErr", null);
+			if (sessionMap.get("addErr") != null) {
+				sessionMap.put("addErr", null);
 				addErr = "block";
 			} else
 				addErr = "none";
 
 			// pass change
-			if (SessionModel.get("passSuc") != null) {
-				SessionModel.put("passSuc", null);
+			if (sessionMap.get("passSuc") != null) {
+				sessionMap.put("passSuc", null);
 				passSuc = "block";
 			} else
 				passSuc = "none";
 
-			if (SessionModel.get("passErr") != null) {
-				SessionModel.put("passErr", null);
+			if (sessionMap.get("passErr") != null) {
+				sessionMap.put("passErr", null);
 				passErr = "block";
 			} else
 				passErr = "none";
@@ -161,64 +169,64 @@ public class StaffController {
 		return _staff;
 	}
 
-	public void saveChange() {
+	public void saveChange() throws IOException {
 		// System.out.println(Jsoup.parse(staff.getAddress()).text().length()+":HTML");
 		try {
 			if (Jsoup.parse(staff.getEmail()).text().length() == 0 || Jsoup.parse(staff.getName()).text().length() == 0
 					|| Jsoup.parse(staff.getAddress()).text().length() == 0) {
 
-				SessionModel.sessionMap.put("editErr", true);
+				sessionMap.put("editErr", true);
 			} else if (Jsoup.parse(staff.getEmail()).text().length() > 254
 					|| Jsoup.parse(staff.getName()).text().length() > 50
 					|| Jsoup.parse(staff.getAddress()).text().length() > 100) {
 
-				SessionModel.sessionMap.put("editErr", true);
+				sessionMap.put("editErr", true);
 			} else {
 				staff.setAddress(Jsoup.parse(staff.getAddress()).text());
 				staff.setEmail(Jsoup.parse(staff.getEmail()).text());
 				staff.setName(Jsoup.parse(staff.getName()).text());
 				new StaffModel().update(staff);
-				SessionModel.sessionMap.put("editSuc", true);
+				sessionMap.put("editSuc", true);
 			}
 			staff = new StaffModel().find(staff.getId());
-			SessionModel.redirect("staff.xhtml?edit=" + staff.getId());
+			externalContext.redirect("staff.xhtml?edit=" + staff.getId());
 		} catch (Exception e) {
-			SessionModel.sessionMap.put("editErr", true);
-			SessionModel.redirect("staff.xhtml?edit=" + staff.getId());
+			sessionMap.put("editErr", true);
+			externalContext.redirect("staff.xhtml?edit=" + staff.getId());
 		}
 
 	}
 
-	public void deleteThisStaff(Staff _staff) {
+	public void deleteThisStaff(Staff _staff) throws IOException {
 		System.out.println(_staff.getPerforms().size() + ":size");
 		if (_staff.getPerforms().size() == 0) {
 			new StaffModel().delete(new StaffModel().find(_staff.getId()));
 			System.out.println("Xóa Xong!!!!~!");
 		}
-		SessionModel.redirect("staff.xhtml");
+		externalContext.redirect("staff.xhtml");
 	}
 
-	public void save() {
+	public void save() throws IOException {
 		if (Jsoup.parse(_staff.getAddress()).text().length() == 0
 				|| Jsoup.parse(_staff.getName()).text().length() == 0) {
-			SessionModel.sessionMap.put("addErr", true);
+			sessionMap.put("addErr", true);
 		} else {
 			new StaffModel().create(_staff);
 			_staff = new Staff();
-			SessionModel.sessionMap.put("addSuc", true);
+			sessionMap.put("addSuc", true);
 		}
-		SessionModel.redirect("staff.xhtml?add=staff");
+		externalContext.redirect("staff.xhtml?add=staff");
 	}
 
-	public void changePass() {
+	public void changePass() throws IOException {
 		try {
 			new StaffModel().changePass(staff, newPass);
 			newPass = "";
-			SessionModel.sessionMap.put("passSuc", true);
-			SessionModel.redirect("staff.xhtml?edit=" + staff.getId());
+			sessionMap.put("passSuc", true);
+			externalContext.redirect("staff.xhtml?edit=" + staff.getId());
 		} catch (Exception e) {
-			SessionModel.sessionMap.put("passErr", true);
-			SessionModel.redirect("staff.xhtml?edit=" + staff.getId());
+			sessionMap.put("passErr", true);
+			externalContext.redirect("staff.xhtml?edit=" + staff.getId());
 		}
 	}
 }

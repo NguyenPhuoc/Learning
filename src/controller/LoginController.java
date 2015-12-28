@@ -1,9 +1,14 @@
 package controller;
 
+import java.io.IOException;
+import java.util.Map;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import entities.Role;
 import entities.Staff;
 import model.SessionModel;
 import model.StaffModel;
@@ -11,15 +16,18 @@ import model.StaffModel;
 @ManagedBean(name = "loginController")
 @SessionScoped
 public class LoginController {
-//	public void checkIsNotLogin() {
-//		if (!FacesContext.getCurrentInstance().isPostback())
-//			if (SessionModel.sessionMap.get("user") == null) {
-//				SessionModel.redirect("login.xhtml");
-//			}
-//	}
+	// public void checkIsNotLogin() {
+	// if (!FacesContext.getCurrentInstance().isPostback())
+	// if (sessionMap.get("user") == null) {
+	// externalContext.redirect("login.xhtml");
+	// }
+	// }
+	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	private Map<String, Object> sessionMap = externalContext.getSessionMap();
+	private Map<String, String> params = externalContext.getRequestParameterMap();
 
 	private Staff staff = new Staff();
-	private String notice;
+	private String notice = "";
 
 	public Staff getStaff() {
 		return staff;
@@ -37,11 +45,13 @@ public class LoginController {
 		this.notice = notice;
 	}
 
-	public void checkIsLogin() {
-		System.out.println("checkIsLogin");
-		if (!FacesContext.getCurrentInstance().isPostback())
-			if (SessionModel.sessionMap.get("user") != null)
-				SessionModel.redirect("index.xhtml");
+	public void checkIsLogin() throws IOException {
+		System.out.println("checkIsLogin no post");
+		if (!FacesContext.getCurrentInstance().isPostback()) {
+			if (sessionMap.get("user") != null)
+				externalContext.redirect("index.xhtml");
+			System.out.println("checkIsLogin");
+		}
 	}
 
 	public void login() {
@@ -50,24 +60,30 @@ public class LoginController {
 			Staff staff = new StaffModel().login(this.staff);
 
 			if (staff != null && staff.getStatus() == 1) {
-				SessionModel.sessionMap.put("user", staff);
-				//return "/admin/index?faces-redirect=true";
-				SessionModel.redirect("index.xhtml");
+				sessionMap.put("user", staff);
+				System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+				Role role = staff.getRole();
+				sessionMap.put("role", role);
+
+				// return "/admin/index?faces-redirect=true";
+				externalContext.redirect("index.xhtml");
 			} else {
 				this.notice = "Username or password invalid";
 				this.staff.setPassword(null);
-				//return null;
+				// return null;
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			//return null;
+			// System.out.println(e.getMessage());
+			e.printStackTrace();
+			// return null;
+
 		}
 	}
 
-	public void logout() {
+	public void logout() throws IOException {
 		staff = new Staff();
-		this.notice = null;
+		this.notice = "";
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		SessionModel.redirect("login.xhtml");
+		externalContext.redirect("login.xhtml");
 	}
 }

@@ -1,10 +1,14 @@
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import entities.Student;
 import model.SessionModel;
@@ -13,10 +17,14 @@ import model.StudentModel;
 @ManagedBean(name = "studentController")
 @SessionScoped
 public class StudentController {
+	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	private Map<String, Object> sessionMap = externalContext.getSessionMap();
+	private Map<String, String> params = externalContext.getRequestParameterMap();
+
 	public void init() {
 		if (!SessionModel.isPostback()) {
-			String paramAdd = SessionModel.params("add");
-			String paramEdit = SessionModel.params.get("edit");
+			String paramAdd = params.get("add");
+			String paramEdit = params.get("edit");
 			if (paramAdd != null && paramAdd.equalsIgnoreCase("student")) {
 				tableTag = "none";
 				divAdd = "block";
@@ -44,38 +52,38 @@ public class StudentController {
 		}
 		// ===============================
 		// add
-		if (SessionModel.get("addSuc") != null) {
-			SessionModel.put("addSuc", null);
+		if (sessionMap.get("addSuc") != null) {
+			sessionMap.put("addSuc", null);
 			addSuc = "block";
 		} else
 			addSuc = "none";
 
-		if (SessionModel.get("addErr") != null) {
-			SessionModel.put("addErr", null);
+		if (sessionMap.get("addErr") != null) {
+			sessionMap.put("addErr", null);
 			addErr = "block";
 		} else
 			addErr = "none";
 		// edit
-		if (SessionModel.get("editSuc") != null) {
-			SessionModel.put("editSuc", null);
+		if (sessionMap.get("editSuc") != null) {
+			sessionMap.put("editSuc", null);
 			editSuc = "block";
 		} else
 			editSuc = "none";
 
-		if (SessionModel.get("editErr") != null) {
-			SessionModel.put("editErr", null);
+		if (sessionMap.get("editErr") != null) {
+			sessionMap.put("editErr", null);
 			editErr = "block";
 		} else
 			editErr = "none";
 		// pass
-		if (SessionModel.get("passSuc") != null) {
-			SessionModel.put("passSuc", null);
+		if (sessionMap.get("passSuc") != null) {
+			sessionMap.put("passSuc", null);
 			passSuc = "block";
 		} else
 			passSuc = "none";
 
-		if (SessionModel.get("passErr") != null) {
-			SessionModel.put("passErr", null);
+		if (sessionMap.get("passErr") != null) {
+			sessionMap.put("passErr", null);
 			passErr = "block";
 		} else
 			passErr = "none";
@@ -156,45 +164,45 @@ public class StudentController {
 		return tableTag;
 	}
 
-	public void save() {
+	public void save() throws IOException {
 		try {
 			new StudentModel().create(_student);
-			SessionModel.put("addSuc", true);
+			sessionMap.put("addSuc", true);
 			_student = new Student();
 		} catch (Exception e) {
-			SessionModel.put("addErr", true);
+			sessionMap.put("addErr", true);
 		}
-		SessionModel.redirect("student.xhtml?add=student");
+		externalContext.redirect("student.xhtml?add=student");
 	}
 
-	public void saveChange() {
+	public void saveChange() throws IOException {
 		try {
 			new StudentModel().update(student);
 			student = new StudentModel().find(student.getId());
-			SessionModel.put("editSuc", true);
+			sessionMap.put("editSuc", true);
 		} catch (Exception e) {
-			SessionModel.put("editErr", true);
+			sessionMap.put("editErr", true);
 		}
-		SessionModel.redirect("student.xhtml?edit=" + student.getId());
+		externalContext.redirect("student.xhtml?edit=" + student.getId());
 	}
 
-	public void deleteThisStudent(Student _student) {
+	public void deleteThisStudent(Student _student) throws IOException {
 		if (_student.getCourseregisters().size() == 0) {
 			new StudentModel().delete(new StudentModel().find(_student.getId()));
 			System.out.println("Xóa Xong!!!!~!");
 		}
-		SessionModel.redirect("student.xhtml");
+		externalContext.redirect("student.xhtml");
 	}
 
-	public void changePass() {
+	public void changePass() throws IOException {
 		try {
 			new StudentModel().changePass(student, newPass);
 			newPass = "";
-			SessionModel.sessionMap.put("passSuc", true);
-			SessionModel.redirect("student.xhtml?edit=" + student.getId());
+			sessionMap.put("passSuc", true);
+			externalContext.redirect("student.xhtml?edit=" + student.getId());
 		} catch (Exception e) {
-			SessionModel.sessionMap.put("passErr", true);
-			SessionModel.redirect("student.xhtml?edit=" + student.getId());
+			sessionMap.put("passErr", true);
+			externalContext.redirect("student.xhtml?edit=" + student.getId());
 		}
 	}
 
