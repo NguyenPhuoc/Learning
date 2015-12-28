@@ -68,8 +68,6 @@
 
 </h:head>
 <h:body styleClass="page-header-fixed">
-	<f:event listener="#{loginController.checkIsNotLogin()}"
-		type="preRenderView"></f:event>
 	<f:event listener="#{templateController.init()}" type="preRenderView"></f:event>
 
 	<div class="overlay"></div>
@@ -254,6 +252,9 @@
 				<li><a href="student.xhtml" class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-briefcase"></span>
 						<p>Student</p></a></li>
+						<li><a href="faqs.xhtml" class="waves-effect waves-button"><span
+						class="menu-icon glyphicon glyphicon-list-alt"></span>
+						<p>FAQs</p></a></li>
 				<li class="droplink"><a href="#"
 					class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-briefcase"></span>

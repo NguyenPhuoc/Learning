@@ -13,7 +13,9 @@ public class SessionModel {
 
 	public static void redirect(String url) {
 		try {
-			externalContext.redirect(externalContext.getRequestContextPath() + url);
+			externalContext.redirect(url);
+			// externalContext.redirect(externalContext.getRequestContextPath()
+			// + url);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("catch redirect()");

@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -22,8 +24,19 @@ public class TemplateController {
 	}
 
 	public void init() {
-		if (SessionModel.sessionMap.get("user") != null) {
-			staff = (Staff) SessionModel.sessionMap.get("user");
+		if (!FacesContext.getCurrentInstance().isPostback()) {
+			if (SessionModel.sessionMap.get("user") == null) {
+				//SessionModel.redirect("login.xhtml");
+				try {
+					FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+					System.out.println("dmmmmmmmmmmmmmmmmmmmmmmmmmmmm============================");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				staff = (Staff) SessionModel.sessionMap.get("user");
+			}
 		}
 	}
 }

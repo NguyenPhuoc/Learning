@@ -1,18 +1,13 @@
 package controller;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 import org.jsoup.Jsoup;
 
-import entities.Role;
 import entities.Staff;
-import model.RoleModel;
 import model.SessionModel;
 import model.StaffModel;
 
@@ -24,28 +19,30 @@ public class StaffController {
 		if (!SessionModel.isPostback()) {
 			String paramAdd = SessionModel.params("add");
 			String paramEdit = SessionModel.params("edit");
-			divEdit = "none";
+
 			if (paramAdd != null && paramAdd.equalsIgnoreCase("staff")) {
 				tableTag = "none";
 				divAdd = "block";
-			} else
-			// {
-			// staffs = new StaffModel().findStaff();
-			// tableTag = "block";
-			// divAdd = "none";
-			// }
-			if (paramEdit != null) {
+			} else if (paramEdit != null) {
 				staff = new StaffModel().find(paramEdit);
-				if (staff != null && staff.getRole().getId() != 1)
+				if (staff != null && staff.getRole().getId() != 1) {
 					divEdit = "block";
-				if (staff.getPerforms().size() == 0)
-					btnDel = "initial";
-				else
-					btnDel = "none";
+					tableTag = "none";
+					if (staff.getPerforms().size() == 0)
+						btnDel = "initial";
+					else
+						btnDel = "none";
+				} else {
+					staffs = new StaffModel().findStaff();
+					tableTag = "block";
+					divAdd = "none";
+					divEdit = "none";
+				}
 			} else {
 				staffs = new StaffModel().findStaff();
 				tableTag = "block";
 				divAdd = "none";
+				divEdit = "none";
 			}
 			if (SessionModel.sessionMap.get("editSuc") != null) {
 				SessionModel.sessionMap.put("editSuc", null);
@@ -184,10 +181,10 @@ public class StaffController {
 				SessionModel.sessionMap.put("editSuc", true);
 			}
 			staff = new StaffModel().find(staff.getId());
-			SessionModel.redirect("/admin/staff.xhtml?edit=" + staff.getId());
+			SessionModel.redirect("staff.xhtml?edit=" + staff.getId());
 		} catch (Exception e) {
 			SessionModel.sessionMap.put("editErr", true);
-			SessionModel.redirect("/admin/staff.xhtml?edit=" + staff.getId());
+			SessionModel.redirect("staff.xhtml?edit=" + staff.getId());
 		}
 
 	}
@@ -198,7 +195,7 @@ public class StaffController {
 			new StaffModel().delete(new StaffModel().find(_staff.getId()));
 			System.out.println("Xóa Xong!!!!~!");
 		}
-		SessionModel.redirect("/admin/staff.xhtml");
+		SessionModel.redirect("staff.xhtml");
 	}
 
 	public void save() {
@@ -210,7 +207,7 @@ public class StaffController {
 			_staff = new Staff();
 			SessionModel.sessionMap.put("addSuc", true);
 		}
-		SessionModel.redirect("/admin/staff.xhtml?add=staff");
+		SessionModel.redirect("staff.xhtml?add=staff");
 	}
 
 	public void changePass() {
@@ -218,10 +215,10 @@ public class StaffController {
 			new StaffModel().changePass(staff, newPass);
 			newPass = "";
 			SessionModel.sessionMap.put("passSuc", true);
-			SessionModel.redirect("/admin/staff.xhtml?edit=" + staff.getId());
+			SessionModel.redirect("staff.xhtml?edit=" + staff.getId());
 		} catch (Exception e) {
 			SessionModel.sessionMap.put("passErr", true);
-			SessionModel.redirect("/admin/staff.xhtml?edit=" + staff.getId());
+			SessionModel.redirect("staff.xhtml?edit=" + staff.getId());
 		}
 	}
 }

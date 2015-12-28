@@ -8,7 +8,6 @@ import javax.faces.bean.SessionScoped;
 
 import entities.Student;
 import model.SessionModel;
-import model.StaffModel;
 import model.StudentModel;
 
 @ManagedBean(name = "studentController")
@@ -17,24 +16,30 @@ public class StudentController {
 	public void init() {
 		if (!SessionModel.isPostback()) {
 			String paramAdd = SessionModel.params("add");
+			String paramEdit = SessionModel.params.get("edit");
 			if (paramAdd != null && paramAdd.equalsIgnoreCase("student")) {
 				tableTag = "none";
 				divAdd = "block";
+			} else if (paramEdit != null) {
+				student = new StudentModel().find(paramEdit);
+				if (student != null) {
+					divEdit = "block";
+					tableTag = "none";
+					if (student.getPerforms().size() == 0 && student.getCourseregisters().size() == 0)
+						btnDel = "initial";
+					else
+						btnDel = "none";
+				} else {
+					students = new StudentModel().findAll();
+					tableTag = "block";
+					divAdd = "none";
+					divEdit = "none";
+				}
 			} else {
 				students = new StudentModel().findAll();
 				tableTag = "block";
 				divAdd = "none";
-			}
-			divEdit = "none";
-			String paramEdit = SessionModel.params.get("edit");
-			if (paramEdit != null) {
-				student = new StudentModel().find(paramEdit);
-				if (student != null)
-					divEdit = "block";
-				if (student.getPerforms().size() == 0 && student.getCourseregisters().size() == 0)
-					btnDel = "initial";
-				else
-					btnDel = "none";
+				divEdit = "none";
 			}
 		}
 		// ===============================
@@ -159,7 +164,7 @@ public class StudentController {
 		} catch (Exception e) {
 			SessionModel.put("addErr", true);
 		}
-		SessionModel.redirect("/admin/student.xhtml?add=student");
+		SessionModel.redirect("student.xhtml?add=student");
 	}
 
 	public void saveChange() {
@@ -170,7 +175,7 @@ public class StudentController {
 		} catch (Exception e) {
 			SessionModel.put("editErr", true);
 		}
-		SessionModel.redirect("/admin/student.xhtml?edit=" + student.getId());
+		SessionModel.redirect("student.xhtml?edit=" + student.getId());
 	}
 
 	public void deleteThisStudent(Student _student) {
@@ -178,7 +183,7 @@ public class StudentController {
 			new StudentModel().delete(new StudentModel().find(_student.getId()));
 			System.out.println("Xóa Xong!!!!~!");
 		}
-		SessionModel.redirect("/admin/student.xhtml");
+		SessionModel.redirect("student.xhtml");
 	}
 
 	public void changePass() {
@@ -186,10 +191,10 @@ public class StudentController {
 			new StudentModel().changePass(student, newPass);
 			newPass = "";
 			SessionModel.sessionMap.put("passSuc", true);
-			SessionModel.redirect("/admin/student.xhtml?edit=" + student.getId());
+			SessionModel.redirect("student.xhtml?edit=" + student.getId());
 		} catch (Exception e) {
 			SessionModel.sessionMap.put("passErr", true);
-			SessionModel.redirect("/admin/student.xhtml?edit=" + student.getId());
+			SessionModel.redirect("student.xhtml?edit=" + student.getId());
 		}
 	}
 

@@ -3,26 +3,26 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 <ui:composition template="/admin/template.xhtml">
 	<ui:define name="content">
-		<f:event listener="#{studentController.init()}" type="preRenderView"></f:event>
+		<f:event listener="#{faqsController.init()}" type="preRenderView"></f:event>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel-body">
-					<a class="btn btn-success btn-addon m-b-sm" href="?add=student"><i
-						class="fa fa-plus"></i>Add New Student</a>
+					<a class="btn btn-success btn-addon m-b-sm" href="?add=faq"><i
+						class="fa fa-plus"></i>Add New FAQsaaaaádadasdas</a>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-white"
-					style="display: #{studentController.tableTag}">
+					style="display: #{faqsController.tableTag}">
 					<div class="panel-heading clearfix">
-						<h4 class="panel-title">Information Student</h4>
+						<h4 class="panel-title">List FAQs</h4>
 					</div>
 					<div class="panel-body">
 						<h:form prependId="false">
@@ -36,26 +36,18 @@
 }
 </style>
 							<h:dataTable styleClass="table table-striped"
-								value="#{studentController.students}" var="s" rowClasses="a,b">
+								value="#{faqsController.faqs}" var="faq" rowClasses="a,b">
 								<h:column>
 									<f:facet name="header">#</f:facet>
-									#{studentController.students.indexOf(s) + 1}
-								</h:column>
-								<h:column>
-									<f:facet name="header">ID</f:facet>
-									${s.id}
-								</h:column>
-								<h:column>
-									<f:facet name="header">Email</f:facet>
-									${s.email}
+									#{faqsController.faqs.indexOf(faq) + 1}
 								</h:column>
 								<h:column>
 									<f:facet name="header">Name</f:facet>
-									${s.name}
+									${faq.name}
 								</h:column>
 								<h:column>
-									<f:facet name="header">Address</f:facet>
-									#{s.address}
+									<f:facet name="header">Detail</f:facet>
+									${faq.detail}
 								</h:column>
 								<h:column>
 									<f:facet name="header">Option</f:facet>
@@ -67,18 +59,17 @@
 				</div>
 				<!-- ===========================divADD================================= -->
 				<div class="panel panel-white"
-					style="display: #{studentController.divAdd}">
+					style="display: #{faqsController.divAdd}">
 					<div class="panel-heading clearfix">
 						<h4 class="panel-title">Add New Student</h4>
 					</div>
 					<div class="panel-body">
 						<h:form prependId="false" styleClass="form-horizontal">
-							<!-- ======================= -->
 							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Full
-									Name </label>
+								<label for="input-placeholder" class="col-sm-2 control-label">Name
+									FAQs </label>
 								<div class="col-sm-10">
-									<h:inputText value="#{studentController._student.name}"
+									<h:inputText value="#{faqsController._faq.name}"
 										styleClass="form-control" maxlength="50" required="true"
 										requiredMessage="Invalid name" validatorMessage="Invalid name"
 										id="_name">
@@ -88,34 +79,19 @@
 									<h:message for="_name" />
 								</div>
 							</div>
-							<!-- ======================= -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Email
-								</label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController._student.email}"
-										styleClass="form-control" maxlength="254" pt:type="email"
-										required="true" requiredMessage="Invalid email"
-										validatorMessage="Invalid email" id="_email">
-										<f:validateRegex pattern="#{regular.regexEmail}" />
-										<f:validateLength maximum="254" />
-									</h:inputText>
-									<h:message for="_email" />
-								</div>
-							</div>
 							<!-- ====================== -->
 							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Address
+								<label for="input-placeholder" class="col-sm-2 control-label">Detail 
 								</label>
 								<div class="col-sm-10">
-									<h:inputText value="#{studentController._student.address}"
+									<h:inputText value="#{faqsController._faq.detail}"
 										styleClass="form-control" maxlength="100" required="true"
-										requiredMessage="Invalid address"
-										validatorMessage="Invalid address" id="_address">
+										requiredMessage="Invalid detail"
+										validatorMessage="Invalid detail,[a-z , . /]" id="_detail">
 										<f:validateRegex pattern="#{regular.regexAddress}" />
 										<f:validateLength maximum="100" />
 									</h:inputText>
-									<h:message for="_address" />
+									<h:message for="_detail" />
 								</div>
 							</div>
 							<!-- ====================== -->
