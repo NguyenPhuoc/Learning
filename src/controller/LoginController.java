@@ -16,12 +16,6 @@ import model.StaffModel;
 @ManagedBean(name = "loginController")
 @SessionScoped
 public class LoginController {
-	// public void checkIsNotLogin() {
-	// if (!FacesContext.getCurrentInstance().isPostback())
-	// if (sessionMap.get("user") == null) {
-	// externalContext.redirect("login.xhtml");
-	// }
-	// }
 	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 	private Map<String, Object> sessionMap = externalContext.getSessionMap();
 	private Map<String, String> params = externalContext.getRequestParameterMap();
@@ -57,26 +51,19 @@ public class LoginController {
 	public void login() {
 		System.out.println("Login");
 		try {
-			Staff staff = new StaffModel().login(this.staff);
+			Staff _staff = new StaffModel().login(this.staff);
 
-			if (staff != null && staff.getStatus() == 1) {
-				sessionMap.put("user", staff);
-				System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-				Role role = staff.getRole();
+			if (_staff != null && _staff.getStatus() == 1) {
+				sessionMap.put("user", _staff);
+				Role role = _staff.getRole();
 				sessionMap.put("role", role);
-
-				// return "/admin/index?faces-redirect=true";
 				externalContext.redirect("index.xhtml");
 			} else {
 				this.notice = "Username or password invalid";
 				this.staff.setPassword(null);
-				// return null;
 			}
 		} catch (Exception e) {
-			// System.out.println(e.getMessage());
 			e.printStackTrace();
-			// return null;
-
 		}
 	}
 

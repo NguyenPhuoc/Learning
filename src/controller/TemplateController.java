@@ -15,6 +15,10 @@ import model.StaffModel;
 @ManagedBean(name = "templateController")
 @SessionScoped
 public class TemplateController {
+	public TemplateController() {
+		System.out.println("TemplateController.Contructor");
+	}
+
 	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 	private Map<String, Object> sessionMap = externalContext.getSessionMap();
 	private Map<String, String> params = externalContext.getRequestParameterMap();
@@ -30,12 +34,14 @@ public class TemplateController {
 	}
 
 	public void init() {
+		System.out.println("init.template");
 		if (!FacesContext.getCurrentInstance().isPostback()) {
+			System.out.println("init.template .ispostback");
 			if (sessionMap.get("user") == null) {
 				// SessionModel.redirect("login.xhtml");
 				try {
 					FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
-					System.out.println("dmmmmmmmmmmmmmmmmmmmmmmmmmmmm============================");
+					// System.out.println("------------------");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

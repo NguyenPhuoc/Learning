@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/admin/template.xhtml">
+	<ui:define name="content">
+		<f:event listener="#{feedbackController.init()}" type="preRenderView"></f:event>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-white"
+					style="display: #{feedbackController.tableTag}">
+					<div class="panel-heading clearfix">
+						<h4 class="panel-title">List Feedback</h4>
+					</div>
+					<div class="panel-body">
+						<h:form prependId="false">
+							<style>
+.a {
+	text-transform: capitalize;
+}
+
+.b {
+	text-transform: capitalize;
+}
+</style>
+							<h:dataTable styleClass="table table-striped"
+								value="#{feedbackController.feedbacks}" var="fb"
+								rowClasses="a,b">
+								<h:column>
+									<f:facet name="header">#</f:facet>
+									#{feedbackController.feedbacks.indexOf(fb) + 1}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Name</f:facet>
+									${fb.name}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Email</f:facet>
+									${fb.email}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Comment</f:facet>
+									${fb.comment}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Option</f:facet>
+									<a href="?view=#{fb.id}">view</a>
+								</h:column>
+							</h:dataTable>
+						</h:form>
+					</div>
+				</div>
+				<div class="panel panel-white"
+					style="display: #{feedbackController.divView}">
+					<div class="panel-heading clearfix">
+						<h4 class="panel-title">View Feedback</h4>
+					</div>
+					<div class="panel-body">
+						<div class="mailbox-content">
+							<div class="message-sender">
+								<p>
+									#{feedbackController.feedback.name} - <span>#{feedbackController.feedback.email}</span>
+								</p>
+							</div>
+							<div class="message-content">
+								<p>#{feedbackController.feedback.comment}</p>
+							</div>
+							<div class="message-options pull-right">
+								<a href="feedback.xhtml?reply=#{feedbackController.feedback.id}" class="btn btn-default"><i
+									class="fa fa-reply m-r-xs"></i>Reply</a> <a
+									href="feedback.xhtml?del=#{feedbackController.feedback.id}"
+									class="btn btn-default"><i class="fa fa-trash m-r-xs"></i>Delete</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

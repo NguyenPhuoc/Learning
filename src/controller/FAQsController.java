@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,6 @@ public class FAQsController {
 	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 	private Map<String, Object> sessionMap = externalContext.getSessionMap();
 	private Map<String, String> params = externalContext.getRequestParameterMap();
-	// private Map<String, Object> sessionMap =
-	// FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 
 	public void init() {
 		if (!SessionModel.isPostback()) {
@@ -31,7 +30,11 @@ public class FAQsController {
 				tableTag = "none";
 				divAdd = "block";
 			} else if (paramEdit != null) {
-				faq = new FaqModel().find(paramEdit);
+				try {
+					faq = new FaqModel().find(Integer.parseInt(paramEdit));
+				} catch (Exception e) {
+					faq = null;
+				}
 				if (faq != null) {
 					divEdit = "block";
 					tableTag = "none";
@@ -73,6 +76,38 @@ public class FAQsController {
 			editErr = "block";
 		} else
 			editErr = "none";
+	}
+
+	public void save() {
+		try {
+			new FaqModel().create(_faq);
+			_faq = new Faq();
+			sessionMap.put("addSuc", true);
+			externalContext.redirect("faqs.xhtml?add=faq");
+		} catch (Exception e) {
+			sessionMap.put("addErr", true);
+			System.out.println("catch save faq");// TODO: handle exception
+		}
+	}
+
+	public void saveChange() {
+		try {
+			new FaqModel().update(faq);
+			sessionMap.put("editSuc", true);
+			externalContext.redirect("faqs.xhtml?edit=" + faq.getId());
+		} catch (Exception e) {
+			sessionMap.put("editErr", true);
+			System.out.println("catch save change faq");
+		}
+	}
+
+	public void daleteThisFAQs(Faq faqd) {
+		try {
+			new FaqModel().delete(new FaqModel().find(faqd.getId()));
+			externalContext.redirect("faqs.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getTableTag() {
@@ -165,4 +200,5 @@ public class FAQsController {
 	private String divEdit = "none";
 	private String editSuc = "none";
 	private String editErr = "none";
+
 }

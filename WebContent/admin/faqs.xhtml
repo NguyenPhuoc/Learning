@@ -51,7 +51,7 @@
 								</h:column>
 								<h:column>
 									<f:facet name="header">Option</f:facet>
-									<a href="?edit=#{s.id}">Edit</a>
+									<a href="?edit=#{faq.id}">Edit</a>
 								</h:column>
 							</h:dataTable>
 						</h:form>
@@ -61,7 +61,7 @@
 				<div class="panel panel-white"
 					style="display: #{faqsController.divAdd}">
 					<div class="panel-heading clearfix">
-						<h4 class="panel-title">Add New Student</h4>
+						<h4 class="panel-title">Add New FAQs</h4>
 					</div>
 					<div class="panel-body">
 						<h:form prependId="false" styleClass="form-horizontal">
@@ -70,9 +70,9 @@
 									FAQs </label>
 								<div class="col-sm-10">
 									<h:inputText value="#{faqsController._faq.name}"
-										styleClass="form-control" maxlength="50" required="true"
-										requiredMessage="Invalid name" validatorMessage="Invalid name"
-										id="_name">
+										autocomplete="off" styleClass="form-control" maxlength="50"
+										required="true" requiredMessage="Invalid name"
+										validatorMessage="Invalid name" id="_name">
 										<f:validateRegex pattern="#{regular.regexName}" />
 										<f:validateLength maximum="50" />
 									</h:inputText>
@@ -81,78 +81,34 @@
 							</div>
 							<!-- ====================== -->
 							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Detail 
+								<label for="input-placeholder" class="col-sm-2 control-label">Detail
 								</label>
 								<div class="col-sm-10">
-									<h:inputText value="#{faqsController._faq.detail}"
-										styleClass="form-control" maxlength="100" required="true"
+									<h:inputTextarea value="#{faqsController._faq.detail}"
+										styleClass="form-control" rows="5" required="true"
 										requiredMessage="Invalid detail"
 										validatorMessage="Invalid detail,[a-z , . /]" id="_detail">
 										<f:validateRegex pattern="#{regular.regexAddress}" />
-										<f:validateLength maximum="100" />
-									</h:inputText>
+									
+									</h:inputTextarea>
 									<h:message for="_detail" />
-								</div>
-							</div>
-							<!-- ====================== -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Faculty
-								</label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController._student.faculty}"
-										styleClass="form-control" maxlength="50" required="true"
-										requiredMessage="Invalid faculty"
-										validatorMessage="Invalid faculty" id="_faculty">
-										<f:validateRegex pattern="#{regular.regexName}" />
-										<f:validateLength maximum="50" />
-									</h:inputText>
-									<h:message for="_faculty" />
-								</div>
-							</div>
-							<!-- ====================== -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">DOB
-								</label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController._student.dob}"
-										styleClass="form-control date-picker" required="true"
-										pt:placeholder="mm/dd/yyyy" validatorMessage="Invalid DOB"
-										requiredMessage="Invalid DOB" id="_dob">
-										<f:convertDateTime pattern="MM/dd/yyyy"></f:convertDateTime>
-									</h:inputText>
-									<h:message for="_dob" />
-								</div>
-							</div>
-							<!-- ====================== -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Password
-								</label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController._student.password}"
-										styleClass="form-control" required="true"
-										requiredMessage="Invalid Password"
-										validatorMessage="Password invalid, the shortest is 6 characters."
-										id="_password">
-										<f:validateLength maximum="32" minimum="6" />
-									</h:inputText>
-									<h:message for="_password" />
 								</div>
 							</div>
 							<!-- ====================== -->
 							<div class="form-group">
 								<label for="input-placeholder" class="col-sm-2 control-label"></label>
 								<div class="col-sm-10">
-									<h:commandButton action="#{studentController.save()}"
-										value="Save" styleClass="btn btn-info">
+									<h:commandButton action="#{faqsController.save()}" value="Save"
+										styleClass="btn btn-info">
 										<f:ajax execute="@form" render="@form"></f:ajax>
 									</h:commandButton>
 									<br /> <br />
 									<div class="alert alert-success"
-										style="width: 350px; display: #{studentController.addSuc}">
+										style="width: 350px; display: #{faqsController.addSuc}">
 										<b>Save successfully</b>
 									</div>
 									<div class="alert alert-danger"
-										style="width: 350px; display: #{studentController.addErr}">
+										style="width: 350px; display: #{faqsController.addErr}">
 										<b>Save failed</b>
 									</div>
 								</div>
@@ -163,125 +119,60 @@
 				</div>
 				<!-- ===========================divEdit================================= -->
 				<div class="panel panel-white"
-					style="display: #{studentController.divEdit}">
+					style="display: #{faqsController.divEdit}">
 					<div class="panel-heading clearfix">
-						<h4 class="panel-title">Information Student</h4>
+						<h4 class="panel-title">Information FAQs</h4>
 					</div>
 					<div class="panel-body">
 						<h:form prependId="false" styleClass="form-horizontal">
 							<!-- ======================= -->
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Username </label>
+								<label for="input-placeholder" class="col-sm-2 control-label">Name
+									FAQs </label>
 								<div class="col-sm-10">
-									<p class="form-control-static">#{studentController.student.id}</p>
-								</div>
-							</div>
-							<!-- ======================= -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Full
-									Name </label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController.student.name}"
-										styleClass="form-control" maxlength="50" required="true"
-										requiredMessage="Invalid name" id="name"
-										validatorMessage="Invalid name">
+									<h:inputText value="#{faqsController.faq.name}"
+										autocomplete="off" styleClass="form-control" maxlength="50"
+										required="true" requiredMessage="Invalid name"
+										validatorMessage="Invalid name" id="name">
 										<f:validateRegex pattern="#{regular.regexName}" />
 										<f:validateLength maximum="50" />
 									</h:inputText>
 									<h:message for="name" />
 								</div>
 							</div>
-							<!-- ======================= -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Email
-								</label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController.student.email}"
-										styleClass="form-control" maxlength="254" pt:type="email"
-										required="true" requiredMessage="Invalid email"
-										validatorMessage="Invalid email" id="email">
-										<f:validateRegex pattern="#{regular.regexEmail}" />
-										<f:validateLength maximum="254" />
-									</h:inputText>
-									<h:message for="email" />
-								</div>
-							</div>
 							<!-- ====================== -->
 							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Address
+								<label for="input-placeholder" class="col-sm-2 control-label">Detail
 								</label>
 								<div class="col-sm-10">
-									<h:inputText value="#{studentController.student.address}"
-										styleClass="form-control" maxlength="100" required="true"
-										requiredMessage="Invalid address" id="address"
-										validatorMessage="Invalid address">
+									<h:inputTextarea value="#{faqsController.faq.detail}"
+										styleClass="form-control" rows="5" required="true"
+										requiredMessage="Invalid detail"
+										validatorMessage="Invalid detail,[a-z , . /]" id="detail">
 										<f:validateRegex pattern="#{regular.regexAddress}" />
-										<f:validateLength maximum="100" />
-									</h:inputText>
-									<h:message for="address" />
-								</div>
-							</div>
-							<!-- ====================== -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Faculty
-								</label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController.student.faculty}"
-										styleClass="form-control" maxlength="50" required="true"
-										requiredMessage="Invalid faculty" id="faculty"
-										validatorMessage="Invalid faculty">
-										<f:validateRegex pattern="#{regular.regexName}" />
-										<f:validateLength maximum="50" />
-									</h:inputText>
-									<h:message for="faculty" />
-								</div>
-							</div>
-							<!-- ====================== -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">DOB
-								</label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController.student.dob}"
-										styleClass="form-control date-picker" required="true"
-										pt:placeholder="mm/dd/yyyy" requiredMessage="Invalid DOB"
-										id="dob">
-										<f:convertDateTime pattern="MM/dd/yyyy"></f:convertDateTime>
-									</h:inputText>
-									<h:message for="dob" />
-								</div>
-							</div>
-							<!-- ====================== -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Status
-								</label>
-								<div class="col-sm-10">
-									<h:selectOneListbox value="#{studentController.student.status}"
-										styleClass="form-control" style="width:120px" id="status">
-										<f:selectItem itemLabel="Active" itemValue="1" />
-										<f:selectItem itemLabel="Block" itemValue="0" />
-									</h:selectOneListbox>
+									</h:inputTextarea>
+									<h:message for="detail" />
 								</div>
 							</div>
 							<!-- ====================== -->
 							<div class="form-group">
 								<label for="input-placeholder" class="col-sm-2 control-label"></label>
 								<div class="col-sm-10">
-									<h:commandButton action="#{studentController.saveChange()}"
+									<h:commandButton action="#{faqsController.saveChange()}"
 										value="Save change" styleClass="btn btn-info">
 										<f:ajax execute="@form" render="@form"></f:ajax>
 									</h:commandButton>
 									<span style="padding: 10px;"></span>
 									<h:commandButton
-										action="#{studentController.deleteThisStudent(studentController.student)}"
-										value="Delete this staff" styleClass="btn btn-danger"
-										style="display: #{studentController.btnDel}" />
+										action="#{faqsController.daleteThisFAQs(faqsController.faq)}"
+										value="Delete this FAQs" styleClass="btn btn-danger" />
 									<br /> <br />
 									<div class="alert alert-success"
-										style="width: 350px; display: #{studentController.editSuc}">
+										style="width: 350px; display: #{faqsController.editSuc}">
 										<b>Save change successfully</b>
 									</div>
 									<div class="alert alert-danger"
-										style="width: 350px; display: #{studentController.editErr}">
+										style="width: 350px; display: #{faqsController.editErr}">
 										<b>Save change failed</b>
 									</div>
 								</div>
@@ -289,45 +180,6 @@
 							<!-- ====================== -->
 						</h:form>
 					</div>
-					<hr />
-					<!-- ===========change pass=========== -->
-					<div class="panel-body">
-						<h:form prependId="false" styleClass="form-horizontal">
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Password
-								</label>
-								<div class="col-sm-10">
-									<h:inputText value="#{studentController.newPass}"
-										styleClass="form-control" required="true"
-										requiredMessage="Invalid Password" autocomplete="off"
-										validatorMessage="Invalid password" id="password">
-										<f:validateLength maximum="32" minimum="6" />
-									</h:inputText>
-									<h:message for="password" />
-								</div>
-							</div>
-							<!-- ====================== -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label"></label>
-								<div class="col-sm-10">
-									<h:commandButton action="#{studentController.changePass()}"
-										value="Change password" styleClass="btn btn-info">
-										<f:ajax execute="@form" render="@form" />
-									</h:commandButton>
-									<br /> <br />
-									<div class="alert alert-success"
-										style="width: 350px; display: #{studentController.passSuc}">
-										<b>Change password successfully</b>
-									</div>
-									<div class="alert alert-danger"
-										style="width: 350px; display: #{studentController.passErr}">
-										<b>Change password failed</b>
-									</div>
-								</div>
-							</div>
-						</h:form>
-					</div>
-					<!-- =========end change pass============= -->
 				</div>
 			</div>
 		</div>
