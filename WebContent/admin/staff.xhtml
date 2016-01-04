@@ -163,7 +163,8 @@
 									<h:commandButton
 										action="#{staffController.deleteThisStaff(staffController.staff)}"
 										value="Delete this staff" styleClass="btn btn-danger"
-										style="display: #{staffController.btnDel}" />
+										style="display: #{staffController.btnDel}"
+										onclick="return confirm('Are you sure you want to delete this feedback?');" />
 									<br /> <br />
 									<div class="alert alert-success"
 										style="width: 350px; display: #{staffController.aletSuc}">

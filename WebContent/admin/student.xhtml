@@ -34,6 +34,16 @@
 .b {
 	text-transform: capitalize;
 }
+
+.cld>input {
+	background: #fff;
+	border-radius: 0;
+	border: 1px solid #dce1e4;
+	box-shadow: none !important;
+	font-size: 13px;
+	padding: 6px 10px !important;
+	line-height: 1.42857143;
+}
 </style>
 							<h:dataTable styleClass="table table-striped"
 								value="#{studentController.students}" var="s" rowClasses="a,b">
@@ -138,12 +148,10 @@
 								<label for="input-placeholder" class="col-sm-2 control-label">DOB
 								</label>
 								<div class="col-sm-10">
-									<h:inputText value="#{studentController._student.dob}"
-										styleClass="form-control date-picker" required="true"
-										pt:placeholder="mm/dd/yyyy" validatorMessage="Invalid DOB"
-										requiredMessage="Invalid DOB" id="_dob">
-										<f:convertDateTime pattern="MM/dd/yyyy"></f:convertDateTime>
-									</h:inputText>
+									<p:calendar styleClass="cld"
+										value="#{studentController._student.dob}"
+										requiredMessage="Invalid DOB" required="true"
+										pattern="MM/dd/yyyy" placeholder="mm/dd/yyyy" id="_dob"></p:calendar>
 									<h:message for="_dob" />
 								</div>
 							</div>
@@ -265,12 +273,11 @@
 								<label for="input-placeholder" class="col-sm-2 control-label">DOB
 								</label>
 								<div class="col-sm-10">
-									<h:inputText value="#{studentController.student.dob}"
-										styleClass="form-control date-picker" required="true"
-										pt:placeholder="mm/dd/yyyy" requiredMessage="Invalid DOB"
-										id="dob">
-										<f:convertDateTime pattern="MM/dd/yyyy"></f:convertDateTime>
-									</h:inputText>
+									<p:calendar styleClass="cld"
+										value="#{studentController.student.dob}"
+										requiredMessage="Invalid DOB" required="true"
+										pattern="MM/dd/yyyy" placeholder="mm/dd/yyyy" id="dob">
+										</p:calendar>
 									<h:message for="dob" />
 								</div>
 							</div>
@@ -298,6 +305,7 @@
 									<h:commandButton
 										action="#{studentController.deleteThisStudent(studentController.student)}"
 										value="Delete this staff" styleClass="btn btn-danger"
+										onclick="return confirm('Are you sure you want to delete this feedback?');"
 										style="display: #{studentController.btnDel}" />
 									<br /> <br />
 									<div class="alert alert-success"

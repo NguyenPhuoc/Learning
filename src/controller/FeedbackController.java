@@ -14,6 +14,25 @@ import entities.Feedback;
 import model.FeedbackModel;
 import model.SessionModel;
 
+import java.util.Properties;
+
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Quota;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import com.sun.mail.imap.IMAPStore;
+
 @ManagedBean(name = "feedbackController")
 @SessionScoped
 public class FeedbackController {
@@ -21,6 +40,7 @@ public class FeedbackController {
 		if (!SessionModel.isPostback()) {
 			String paramView = params.get("view");
 			String paramDel = params.get("del");
+			String paramReply = params.get("reply");
 			if (paramView != null) {
 				try {
 					feedback = new FeedbackModel().find(Integer.parseInt(paramView));
@@ -51,17 +71,18 @@ public class FeedbackController {
 						e1.printStackTrace();
 					}
 				}
+			} else if (paramReply != null) {
+				divReply = "block";
+				divView = "none";
+				tableTag = "none";
 			} else {
 				tableTag = "block";
 				divView = "none";
+				divReply = "none";
 				feedbacks = new FeedbackModel().findAll();
 			}
 
 		}
-	}
-
-	public void delete(Feedback _feedback) {
-
 	}
 
 	public List<Feedback> getFeedbacks() {
@@ -92,8 +113,67 @@ public class FeedbackController {
 		return divView;
 	}
 
+	public String getDivReply() {
+		return divReply;
+	}
+
+	public void setDivReply(String divReply) {
+		this.divReply = divReply;
+	}
+
+	public String getTitleMail() {
+		return titleMail;
+	}
+
+	public void setTitleMail(String titleMail) {
+		this.titleMail = titleMail;
+	}
+
+	public String getContentMail() {
+		return contentMail;
+	}
+
+	public void setContentMail(String contentMail) {
+		this.contentMail = contentMail;
+	}
+
 	public void setDivView(String divView) {
 		this.divView = divView;
+	}
+
+	public void name() {
+		titleMail += "aaaaaaaaaaa";
+	}
+
+	public void sendMail() {
+		String username = "pharmacyeproject";
+		String password = "e123456780";
+		String from = "pharmacyeproject@gmail.com";
+		String to = "hailua5gs@gmail.com";
+
+		try {
+			Properties props = new Properties();
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.port", "465");
+			//props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			props.put("mail.smtp.socketFactory.port", "465");
+			props.put("mail.smtp.socketFactory.fallback", "false");
+			Session session = Session.getInstance(props, null);
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+			message.setSubject("Customer Contact");
+			message.setText("From");
+			Transport transport = session.getTransport("smtp");
+			transport.connect("smtp.gmail.com", username, password);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+		System.out.println("Done");
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -103,4 +183,7 @@ public class FeedbackController {
 	private Feedback feedback = new Feedback();
 	private String tableTag = "block";
 	private String divView = "none";
+	private String divReply = "none";
+	private String titleMail = "";
+	private String contentMail = "";
 }

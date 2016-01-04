@@ -89,7 +89,7 @@
 										requiredMessage="Invalid detail"
 										validatorMessage="Invalid detail,[a-z , . /]" id="_detail">
 										<f:validateRegex pattern="#{regular.regexAddress}" />
-									
+
 									</h:inputTextarea>
 									<h:message for="_detail" />
 								</div>
@@ -165,7 +165,9 @@
 									<span style="padding: 10px;"></span>
 									<h:commandButton
 										action="#{faqsController.daleteThisFAQs(faqsController.faq)}"
-										value="Delete this FAQs" styleClass="btn btn-danger" />
+										value="Delete this FAQs"
+										onclick="return confirm('Are you sure you want to delete this feedback?');"
+										styleClass="btn btn-danger" />
 									<br /> <br />
 									<div class="alert alert-success"
 										style="width: 350px; display: #{faqsController.editSuc}">
