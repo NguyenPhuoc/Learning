@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/admin/template.xhtml">
+	<ui:define name="content">
+		<f:event listener="#{courseRegisterController.init()}" type="preRenderView"></f:event>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel-body">
+					<a class="btn btn-success btn-addon m-b-sm" href="?add=course"><i
+						class="fa fa-plus"></i>Student Register Course</a>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-white"
+					style="display: #{courseRegisterController.tableTag}">
+					<div class="panel-heading clearfix">
+						<h4 class="panel-title">List Course</h4>
+					</div>
+					<div class="panel-body">
+						<h:form prependId="false">
+							<style>
+.a {
+	text-transform: capitalize;
+}
+
+.b {
+	text-transform: capitalize;
+}
+
+.cld>input {
+	background: #fff;
+	border-radius: 0;
+	border: 1px solid #dce1e4;
+	box-shadow: none !important;
+	font-size: 13px;
+	padding: 6px 10px !important;
+	line-height: 1.42857143;
+}
+</style>
+							<h:dataTable styleClass="table table-striped"
+								value="#{courseRegisterController.courseregisters}" var="c" rowClasses="a,b">
+								<h:column>
+									<f:facet name="header">#</f:facet>
+									#{courseRegisterController.courseregisters.indexOf(c) + 1}
+								</h:column>
+								<h:column>
+									<f:facet name="header">ID Student</f:facet>
+									${c.student.id}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Name Student</f:facet>
+									${c.student.name}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Course</f:facet>
+									${c.course.name}
+								</h:column>
+								<h:column>
+									<f:facet name="header">Option</f:facet>
+									<a href="?edit=#{c.id}">Edit</a>
+								</h:column>
+							</h:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -207,12 +207,12 @@ public class CourseController {
 		this.assignments = assignments;
 	}
 
-	private String tableTag = "block";
 	private List<Course> courses = new ArrayList<Course>();
 	private List<Assignment> assignments = new ArrayList<Assignment>();
-	private String divAdd = "none";
 	private Course course = new Course();
 	private Course _course = new Course();
+	private String tableTag = "block";
+	private String divAdd = "none";
 	private String addSuc = "none";
 	private String addErr = "none";
 	private String divEdit = "none";

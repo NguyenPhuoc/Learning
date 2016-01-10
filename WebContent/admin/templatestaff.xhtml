@@ -68,7 +68,7 @@
 
 </h:head>
 <h:body styleClass="page-header-fixed">
-	<f:event listener="#{loginController.verifyLogin()}" type="preRenderView"></f:event>
+	<f:event listener="#{templateController.init()}" type="preRenderView"></f:event>
 
 	<div class="overlay"></div>
 	<form class="search-form" action="#" method="get">
@@ -246,25 +246,10 @@
 					class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-home"></span>
 						<p>Dashboard</p></a></li>
-				<li><a href="staff.xhtml" class="waves-effect waves-button"><span
-						class="menu-icon glyphicon glyphicon-user"></span>
-						<p>Staff</p></a></li>
-				<li><a href="student.xhtml" class="waves-effect waves-button"><span
-						class="menu-icon glyphicon glyphicon-briefcase"></span>
-						<p>Student</p></a></li>
-				<li><a href="course.xhtml" class="waves-effect waves-button"><span
-						class="menu-icon glyphicon glyphicon-briefcase"></span>
-						<p>Course</p></a></li>
-				<li><a href="courseregister.xhtml"
+				<li><a href="assignment.xhtml"
 					class="waves-effect waves-button"><span
-						class="menu-icon glyphicon glyphicon-list-alt"></span>
-						<p>Student Register Course</p></a></li>
-				<li><a href="faqs.xhtml" class="waves-effect waves-button"><span
-						class="menu-icon glyphicon glyphicon-list-alt"></span>
-						<p>FAQs</p></a></li>
-				<li><a href="feedback.xhtml" class="waves-effect waves-button"><span
-						class="menu-icon glyphicon glyphicon-envelope"></span>
-						<p>Feedback</p></a></li>
+						class="menu-icon glyphicon glyphicon-user"></span>
+						<p>Assignment</p></a></li>
 			</ul>
 		</div>
 		<!-- Page Sidebar Inner -->
