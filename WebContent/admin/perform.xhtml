@@ -2,15 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
 
-<h:head></h:head>
-<h:body>
-
-	<h:form enctype="multipart/form-data">
-		<h:inputFile value="#{bean.file}">
-			<f:ajax listener="#{bean.save}" />
-		</h:inputFile>
-	</h:form>
-</h:body>
+<ui:composition template="/admin/templatestaff.xhtml">
+	<ui:define name="content">
+	
+	assignment
+	</ui:define>
+</ui:composition>
 </html>

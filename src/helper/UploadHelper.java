@@ -10,14 +10,15 @@ import javax.servlet.http.Part;
 public class UploadHelper {
 
 	private final int limit_max_size = 10240000;
-	private final String limit_type_file = "gif|jpg|png|jpeg";
-	private final String path_to = "resources/images";
+	private final String limit_type_file = "doc|docx|pdf";
+	private final String path_to = "/resources/rcs";
 
 	public UploadHelper() {
 	}
 
+	// /Learning/javax.faces.resource/#{courseController.assignment.file}.xhtml?ln=rcs
 	public String processUpload(Part fileUpload) {
-		String fileSaveData = "noimages.jpg";
+		String fileSaveData = "nofile";
 		try {
 			if (fileUpload.getSize() > 0) {
 				String submittedFileName = getFilename(fileUpload);
@@ -50,15 +51,57 @@ public class UploadHelper {
 							fileOutStream.close();
 							fileSaveData = newfilename;
 						} catch (IOException e) {
-							fileSaveData = "noimages.jpg";
+							fileSaveData = "nofile";
 						}
 					}
 				} else {
-					fileSaveData = "noimages.jpg";
+					fileSaveData = "nofile";
 				}
 			}
 		} catch (Exception ex) {
-			fileSaveData = "noimages.jpg";
+			fileSaveData = "nofile";
+		}
+		return fileSaveData;
+	}
+
+	public String processUpload(Part fileUpload, String newfilename) {
+		String fileSaveData = "nofile";
+		try {
+			if (fileUpload.getSize() > 0) {
+				String submittedFileName = getFilename(fileUpload);
+				if (checkFileType(submittedFileName)) {
+					if (fileUpload.getSize() > this.limit_max_size) {
+						FacesContext.getCurrentInstance().addMessage(null,
+								new FacesMessage(FacesMessage.SEVERITY_INFO, "File size too large!", ""));
+					} else {
+						fileSaveData = newfilename;
+						String fileSavePath = FacesContext.getCurrentInstance().getExternalContext()
+								.getRealPath(this.path_to);
+						try {
+							byte[] fileContent = new byte[(int) fileUpload.getSize()];
+							InputStream in = fileUpload.getInputStream();
+							in.read(fileContent);
+
+							File fileToCreate = new File(fileSavePath, newfilename);
+							File folder = new File(fileSavePath);
+							if (!folder.exists()) {
+								folder.mkdirs();
+							}
+							FileOutputStream fileOutStream = new FileOutputStream(fileToCreate);
+							fileOutStream.write(fileContent);
+							fileOutStream.flush();
+							fileOutStream.close();
+							fileSaveData = newfilename;
+						} catch (IOException e) {
+							fileSaveData = "nofile";
+						}
+					}
+				} else {
+					fileSaveData = "nofile";
+				}
+			}
+		} catch (Exception ex) {
+			fileSaveData = "nofile";
 		}
 		return fileSaveData;
 	}

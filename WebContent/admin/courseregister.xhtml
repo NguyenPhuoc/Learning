@@ -8,7 +8,8 @@
 
 <ui:composition template="/admin/template.xhtml">
 	<ui:define name="content">
-		<f:event listener="#{courseRegisterController.init()}" type="preRenderView"></f:event>
+		<f:event listener="#{courseRegisterController.init()}"
+			type="preRenderView"></f:event>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel-body">
@@ -22,7 +23,19 @@
 				<div class="panel panel-white"
 					style="display: #{courseRegisterController.tableTag}">
 					<div class="panel-heading clearfix">
-						<h4 class="panel-title">List Course</h4>
+						<h4 class="panel-title pull-left">List Register</h4>
+						<h:form prependId="false" style="float:right;">
+							<h:selectOneMenu value="#{courseRegisterController.status}"
+								style="height: 30px">
+								<f:selectItem itemValue="1" itemLabel="Register new"></f:selectItem>
+								<f:selectItem itemValue="2" itemLabel="Allow"></f:selectItem>
+								<f:selectItem itemValue="3" itemLabel="Not Allow"></f:selectItem>
+							</h:selectOneMenu>
+							<span style="padding: 5px"></span>
+							<h:commandButton action="#{courseRegisterController.filter()}"
+								value="Filter" styleClass="btn btn-info">
+							</h:commandButton>
+						</h:form>
 					</div>
 					<div class="panel-body">
 						<h:form prependId="false">
@@ -46,14 +59,16 @@
 }
 </style>
 							<h:dataTable styleClass="table table-striped"
-								value="#{courseRegisterController.courseregisters}" var="c" rowClasses="a,b">
+								value="#{courseRegisterController.courseregisters}" var="c"
+								rowClasses="a,b">
 								<h:column>
 									<f:facet name="header">#</f:facet>
 									#{courseRegisterController.courseregisters.indexOf(c) + 1}
 								</h:column>
 								<h:column>
 									<f:facet name="header">ID Student</f:facet>
-									${c.student.id}
+									<a href="student.xhtml?edit=${c.student.id}">${c.student.id}</a>
+
 								</h:column>
 								<h:column>
 									<f:facet name="header">Name Student</f:facet>
@@ -61,11 +76,21 @@
 								</h:column>
 								<h:column>
 									<f:facet name="header">Course</f:facet>
-									${c.course.name}
+									<a href="course.xhtml?edit=${c.course.id}">${c.course.name}</a>
+
 								</h:column>
 								<h:column>
 									<f:facet name="header">Option</f:facet>
-									<a href="?edit=#{c.id}">Edit</a>
+									<h:commandLink action="#{courseRegisterController.allow(c)}"
+										value="Allow" style="color: #3c763d;"
+										rendered="#{c.status != 2 and courseRegisterController.showAllow(c)}" />
+									<span style="padding: 5px;"></span>
+									<h:commandLink action="#{courseRegisterController.notAllow(c)}"
+										rendered="#{c.status == 1}" style="color: red;"
+										value="Not Allow" />
+									<h:commandLink action="#{courseRegisterController.notAllow(c)}"
+										rendered="#{c.status == 2 and courseRegisterController.showNotAllow(c)}"
+										style="color: red;" value="Not Allow" />
 								</h:column>
 							</h:dataTable>
 						</h:form>

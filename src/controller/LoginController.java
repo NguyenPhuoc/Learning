@@ -16,9 +16,9 @@ import model.StaffModel;
 @ManagedBean(name = "loginController")
 @SessionScoped
 public class LoginController {
-	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-	private Map<String, Object> sessionMap = externalContext.getSessionMap();
-	private Map<String, String> params = externalContext.getRequestParameterMap();
+	private ExternalContext externalContext;
+	private Map<String, Object> sessionMap;
+	private Map<String, String> params;
 
 	private Staff staff = new Staff();
 	private String notice = "";
@@ -49,6 +49,10 @@ public class LoginController {
 	}
 
 	public void checkIsLogin() throws IOException {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
+
 		System.out.println("checkIsLogin no post");
 		if (!FacesContext.getCurrentInstance().isPostback()) {
 			// if (sessionMap.get("user") != null)
@@ -59,6 +63,10 @@ public class LoginController {
 	}
 
 	public void verifyLogin() {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
+
 		if (!FacesContext.getCurrentInstance().isPostback()) {
 			System.out.println("init.template .ispostback");
 			// if (sessionMap.get("user") == null) {
@@ -76,6 +84,10 @@ public class LoginController {
 	}
 
 	public void login() {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
+
 		System.out.println("Login");
 		try {
 			Staff _staff = new StaffModel().login(this.staff);
@@ -98,6 +110,10 @@ public class LoginController {
 	}
 
 	public void logout() throws IOException {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
+
 		staff = new Staff();
 		this.notice = "";
 		this.isLogin = false;

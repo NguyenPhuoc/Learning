@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +9,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import entities.Courseregister;
+import entities.CourseregisterId;
 import model.AssignmentModel;
 import model.CourseModel;
 import model.CourseregisterModel;
@@ -18,15 +22,19 @@ import model.SessionModel;
 @ManagedBean(name = "courseRegisterController")
 @SessionScoped
 public class CourseRegisterController {
-	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-	private Map<String, Object> sessionMap = externalContext.getSessionMap();
-	private Map<String, String> params = externalContext.getRequestParameterMap();
+	private ExternalContext externalContext;
+	private Map<String, Object> sessionMap;
+	private Map<String, String> params;
 
 	public void init() {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
 		if (!SessionModel.isPostback()) {
 			String paramAdd = params.get("add");
 			String paramEdit = params.get("edit");
-			courseregisters = new CourseregisterModel().findCourseregisteNew();
+			courseregisters = new CourseregisterModel().findCourseregisteNew(status);
+			// System.out.println(courseregisters.size()+"size");
 
 			// if (paramAdd != null && paramAdd.equalsIgnoreCase("course")) {
 			// tableTag = "none";
@@ -82,6 +90,54 @@ public class CourseRegisterController {
 			editErr = "block";
 		} else
 			editErr = "none";
+	}
+
+	public void allow(Courseregister courseregister) {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		System.out.println(courseregister.getCourse().getName());
+		courseregister.setStatus(2);
+		new CourseregisterModel().update(courseregister);
+		try {
+			courseregisters = new CourseregisterModel().findCourseregisteNew(status);
+			externalContext.redirect("courseregister.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void notAllow(Courseregister courseregister) {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		System.out.println(courseregister.getCourse().getName());
+		courseregister.setStatus(3);
+		new CourseregisterModel().update(courseregister);
+		try {
+			courseregisters = new CourseregisterModel().findCourseregisteNew(status);
+			externalContext.redirect("courseregister.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public boolean showAllow(Courseregister courseregister) {
+		java.util.Date today = java.util.Calendar.getInstance().getTime();
+		if (!today.after(courseregister.getCourse().getEndDate()))
+			return true;
+		else
+			return false;
+	}
+	public boolean showNotAllow(Courseregister courseregister) {
+		java.util.Date today = java.util.Calendar.getInstance().getTime();
+		if (!today.after(courseregister.getCourse().getStartDate()))
+			return true;
+		else
+			return false;
+	}
+
+	public void filter() {
+		courseregisters = new CourseregisterModel().findCourseregisteNew(status);
 	}
 
 	public String getTableTag() {
@@ -164,8 +220,17 @@ public class CourseRegisterController {
 		this.courseregister = courseregister;
 	}
 
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	private List<Courseregister> courseregisters = new ArrayList<Courseregister>();
 	private Courseregister courseregister = new Courseregister();
+	private int status = 1;
 	private String tableTag = "block";
 	private String divAdd = "none";
 	private String addSuc = "none";

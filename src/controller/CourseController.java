@@ -9,11 +9,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.Part;
 
 import entities.Assignment;
 import entities.Course;
+import entities.Courseregister;
+import helper.UploadHelper;
 import model.AssignmentModel;
 import model.CourseModel;
+import model.CourseregisterModel;
 import model.SessionModel;
 
 @ManagedBean(name = "courseController")
@@ -27,10 +31,14 @@ public class CourseController {
 		if (!SessionModel.isPostback()) {
 			String paramAdd = params.get("add");
 			String paramEdit = params.get("edit");
+			String paramCourse = params.get("course");
 			if (paramAdd != null && paramAdd.equalsIgnoreCase("course")) {
 				tableTag = "none";
 				divAdd = "block";
+				tableCourse = "none";
+				divEdit = "none";
 			} else if (paramEdit != null) {
+				String paramAss = params.get("ass");
 				try {
 					course = new CourseModel().find(Integer.parseInt(paramEdit));
 				} catch (Exception e) {
@@ -39,20 +47,58 @@ public class CourseController {
 				if (course != null) {
 					divEdit = "block";
 					tableTag = "none";
+					tableCourse = "none";
 					if (course.getAssignments().size() == 0 && course.getCourseregisters().size() == 0)
 						btnDel = "initial";
 					assignments = new AssignmentModel().findAssg(course.getId());
+					if (paramAss != null) {
+						try {
+							assignment = new AssignmentModel().find(Integer.parseInt(paramAss));
+						} catch (Exception e) {
+							assignment = null;
+							System.out.println("aaaaaaaaaaaamhagsjdgjasdgjgjdgjsag");
+						}
+						if (assignment != null) {
+							divAss = "block";
+							if (assignment.getPerforms().size() == 0)
+								btnDelA = "initial";
+							else
+								btnDelA = "none";
+						} else
+							divAss = "none";
+
+					} else {
+						divAss = "none";
+					}
 				} else {
 					courses = new CourseModel().findAll();
 					tableTag = "block";
 					divAdd = "none";
 					divEdit = "none";
+					tableCourse = "none";
+				}
+			} else if (paramCourse != null) {
+				try {
+					courseregisters = new CourseregisterModel().findCourseregister(Integer.parseInt(paramCourse));
+				} catch (Exception e) {
+					courseregisters = new ArrayList<Courseregister>();
+				}
+				if (courseregisters.size() != 0) {
+					tableCourse = "block";
+					tableTag = "none";
+				} else {
+					courses = new CourseModel().findAll();
+					tableTag = "block";
+					divAdd = "none";
+					divEdit = "none";
+					tableCourse = "none";
 				}
 			} else {
 				courses = new CourseModel().findAll();
 				tableTag = "block";
 				divAdd = "none";
 				divEdit = "none";
+				tableCourse = "none";
 			}
 		}
 		// ===============================
@@ -80,6 +126,30 @@ public class CourseController {
 			editErr = "block";
 		} else
 			editErr = "none";
+		// ====Ass
+		if (sessionMap.get("editSucA") != null) {
+			sessionMap.put("editSucA", null);
+			editSucA = "block";
+		} else
+			editSucA = "none";
+
+		if (sessionMap.get("editErrA") != null) {
+			sessionMap.put("editErrA", null);
+			editErrA = "block";
+		} else
+			editErrA = "none";
+		// =====
+		if (sessionMap.get("addSucA") != null) {
+			sessionMap.put("addSucA", null);
+			addSucA = "block";
+		} else
+			addSucA = "none";
+
+		if (sessionMap.get("addErrA") != null) {
+			sessionMap.put("addErrA", null);
+			addErrA = "block";
+		} else
+			addErrA = "none";
 	}
 
 	public void save() {
@@ -105,6 +175,24 @@ public class CourseController {
 		}
 	}
 
+	public void saveChangeAss() {
+		try {
+			String fi = "";
+			if (this.p != null) {
+				fi = new UploadHelper().processUpload(this.p);
+			}
+			if (!fi.equals("nofile")) {
+				assignment.setFile(fi);
+				new AssignmentModel().update(assignment);
+				sessionMap.put("editSucA", true);
+				externalContext.redirect("course.xhtml?edit=" + course.getId() + "&ass=" + assignment.getId());
+			}
+		} catch (Exception e) {
+			sessionMap.put("editErrA", true);
+			System.out.println("catch add Asss");
+		}
+	}
+
 	public void daleteThisCourse(Course course) {
 		try {
 			if (course.getAssignments().size() == 0 && course.getCourseregisters().size() == 0)
@@ -113,6 +201,34 @@ public class CourseController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void daleteThisAss(Assignment assignment) {
+		try {
+			int idA = assignment.getCourse().getId();
+			if (assignment.getPerforms().size() == 0)
+				new AssignmentModel().delete(new AssignmentModel().find(assignment.getId()));
+			externalContext.redirect("course.xhtml?edit=" + idA);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void saveAss() {
+		try {
+			_assignment.setFile(new UploadHelper().processUpload(this.p));
+			_assignment.setCourse(course);
+			if (!_assignment.getFile().equals("nofile")) {
+				new AssignmentModel().create(_assignment);
+				sessionMap.put("addSucA", true);
+				_assignment = new Assignment();
+				externalContext.redirect("course.xhtml?edit=" + course.getId());
+			}
+		} catch (Exception e) {
+			sessionMap.put("addErrA", true);
+			System.out.println("catch add  Asss");
+		}
+		System.out.println(_assignment.getFile());
 	}
 
 	public String getTableTag() {
@@ -125,6 +241,14 @@ public class CourseController {
 
 	public String getDivAdd() {
 		return divAdd;
+	}
+
+	public Assignment get_assignment() {
+		return _assignment;
+	}
+
+	public void set_assignment(Assignment _assignment) {
+		this._assignment = _assignment;
 	}
 
 	public void setDivAdd(String divAdd) {
@@ -207,17 +331,113 @@ public class CourseController {
 		this.assignments = assignments;
 	}
 
+	public List<Courseregister> getCourseregisters() {
+		return courseregisters;
+	}
+
+	public void setCourseregisters(List<Courseregister> courseregisters) {
+		this.courseregisters = courseregisters;
+	}
+
+	public String getTableCourse() {
+		return tableCourse;
+	}
+
+	public void setTableCourse(String tableCourse) {
+		this.tableCourse = tableCourse;
+	}
+
+	public Part getP() {
+		return p;
+	}
+
+	public void setP(Part p) {
+		this.p = p;
+	}
+
+	public String getDivAss() {
+		return divAss;
+	}
+
+	public void setDivAss(String divAss) {
+		this.divAss = divAss;
+	}
+
+	public Assignment getAssignment() {
+		return assignment;
+	}
+
+	public void setAssignment(Assignment assignment) {
+		this.assignment = assignment;
+	}
+
+	public String getEditSucA() {
+		return editSucA;
+	}
+
+	public void setEditSucA(String editSucA) {
+		this.editSucA = editSucA;
+	}
+
+	public String getEditErrA() {
+		return editErrA;
+	}
+
+	public void setEditErrA(String editErrA) {
+		this.editErrA = editErrA;
+	}
+
+	public String getBtnDelA() {
+		return btnDelA;
+	}
+
+	public void setBtnDelA(String btnDelA) {
+		this.btnDelA = btnDelA;
+	}
+
+	public void setBtnDel(String btnDel) {
+		this.btnDel = btnDel;
+	}
+
+	public String getAddSucA() {
+		return addSucA;
+	}
+
+	public void setAddSucA(String addSucA) {
+		this.addSucA = addSucA;
+	}
+
+	public String getAddErrA() {
+		return addErrA;
+	}
+
+	public void setAddErrA(String addErrA) {
+		this.addErrA = addErrA;
+	}
+
 	private List<Course> courses = new ArrayList<Course>();
 	private List<Assignment> assignments = new ArrayList<Assignment>();
+	private List<Courseregister> courseregisters = new ArrayList<Courseregister>();
+	private String tableCourse = "none";
+	private Part p;
+
 	private Course course = new Course();
 	private Course _course = new Course();
+	private Assignment assignment = new Assignment();
+	private Assignment _assignment = new Assignment();
 	private String tableTag = "block";
 	private String divAdd = "none";
+	private String divAss = "none";
 	private String addSuc = "none";
 	private String addErr = "none";
 	private String divEdit = "none";
 	private String editSuc = "none";
 	private String editErr = "none";
 	private String btnDel = "none";
+	private String editSucA = "none";
+	private String editErrA = "none";
+	private String btnDelA = "none";
+	private String addSucA = "none";
+	private String addErrA = "none";
 
 }

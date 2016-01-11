@@ -11,15 +11,30 @@ public class CourseregisterModel extends AbstractModel<Courseregister> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Courseregister> findCourseregisteNew() {
+	public List<Courseregister> findCourseregisteNew(int stt) {
 		try {
 			if (!sessionFactory.getCurrentSession().getTransaction().isActive())
 				sessionFactory.getCurrentSession().getTransaction().begin();
 			List<Courseregister> courseregisters = new ArrayList<Courseregister>();
-			courseregisters = sessionFactory.getCurrentSession().createQuery("from Courseregiste where Status = 1").list();
+			courseregisters = sessionFactory.getCurrentSession()
+					.createQuery("from Courseregister where Status = " + stt).list();
 			return courseregisters;
 		} catch (Exception e) {
-			return null;
+			return new ArrayList<Courseregister>();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Courseregister> findCourseregister(int stt) {
+		try {
+			if (!sessionFactory.getCurrentSession().getTransaction().isActive())
+				sessionFactory.getCurrentSession().getTransaction().begin();
+			List<Courseregister> courseregisters = new ArrayList<Courseregister>();
+			courseregisters = sessionFactory.getCurrentSession()
+					.createQuery("from Courseregister where ID_Course = " + stt).list();
+			return courseregisters;
+		} catch (Exception e) {
+			return new ArrayList<Courseregister>();
 		}
 	}
 }
