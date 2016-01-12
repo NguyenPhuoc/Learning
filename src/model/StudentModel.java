@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Staff;
 import entities.Student;
 
 public class StudentModel extends AbstractModel<Student> {

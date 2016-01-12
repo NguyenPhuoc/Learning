@@ -65,26 +65,28 @@
 	margin-bottom: 3px;
 }
 </style>
-			<h:form rendered="#{!indexController.login}">
+			<h:form rendered="#{!indexController.login}"
+				styleClass="animated wow fadeInDown animated">
 				<h:inputText value="#{indexController.student.id}"
-					styleClass="ipLogin" />
+					styleClass="ipLogin" pt:placeholder="Username" />
 				<br />
 				<h:inputSecret value="#{indexController.student.password}"
-					styleClass="ipLogin" />
+					styleClass="ipLogin" pt:placeholder="Password" />
 				<br />
 				<h:commandButton action="#{indexController.login()}" value="Login"
 					styleClass="btn btn-default" />
 			</h:form>
-			<h:form rendered="#{indexController.login}">
-				<a href="index.xhtml" class="animated wow fadeInLeft animated"
+			<h:form rendered="#{indexController.login}"
+				styleClass="animated wow fadeInRight animated">
+				<a href="index.xhtml"
 					style="visibility: visible; animation-delay: 0s; animation-name: fadeInLeft; color: white;">
 					#{indexController.student.name} </a>
 				<br />
-				<a href="student.xhtml" class="animated wow fadeInLeft animated"
+				<a href="student.xhtml"
 					style="visibility: visible; animation-delay: 0s; animation-name: fadeInLeft; color: white;">
 					Course | Point</a>
-					<br/>
-					<h:commandLink action="#{indexController.logout()}" value="Logout" />
+				<br />
+				<h:commandLink action="#{indexController.logout()}" value="Logout" />
 			</h:form>
 		</div>
 

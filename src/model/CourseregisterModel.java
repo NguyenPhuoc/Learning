@@ -37,4 +37,21 @@ public class CourseregisterModel extends AbstractModel<Courseregister> {
 			return new ArrayList<Courseregister>();
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public boolean check(String idStudent, String idCourse) {
+		try {
+			if (!sessionFactory.getCurrentSession().getTransaction().isActive())
+				sessionFactory.getCurrentSession().getTransaction().begin();
+			List<Courseregister> courseregisters = new ArrayList<Courseregister>();
+			courseregisters = sessionFactory.getCurrentSession().createQuery(
+					"from Courseregister where ID_Course = " + idCourse + " and ID_Student = '" + idStudent + "'")
+					.list();
+			if (courseregisters.size() == 0)
+				return true;
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

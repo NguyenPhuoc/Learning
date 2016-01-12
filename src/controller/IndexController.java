@@ -12,13 +12,10 @@ import javax.faces.context.FacesContext;
 
 import entities.Faq;
 import entities.Feedback;
-import entities.Role;
-import entities.Staff;
 import entities.Student;
 import model.FaqModel;
 import model.FeedbackModel;
 import model.SessionModel;
-import model.StaffModel;
 import model.StudentModel;
 
 @ManagedBean
@@ -67,7 +64,6 @@ public class IndexController {
 		sessionMap = externalContext.getSessionMap();
 
 		if (!FacesContext.getCurrentInstance().isPostback()) {
-			System.out.println("init.template .ispostback");
 			if (!this.isLogin) {
 				try {
 					externalContext.redirect("index.xhtml");

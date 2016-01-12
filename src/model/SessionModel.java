@@ -1,9 +1,5 @@
 package model;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 public class SessionModel {

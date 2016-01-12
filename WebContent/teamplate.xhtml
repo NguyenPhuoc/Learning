@@ -59,10 +59,14 @@
 	margin-bottom: 3px;
 }
 </style>
-			<h:form>
-				<a href="index.xhtml" class="animated wow fadeInLeft animated"
+			<h:form styleClass="animated wow fadeInRight animated">
+				<a href="index.xhtml"
 					style="visibility: visible; animation-delay: 0s; animation-name: fadeInLeft; color: white;">
 					#{indexController.student.name} </a>
+				<br />
+				<a href="student.xhtml"
+					style="visibility: visible; animation-delay: 0s; animation-name: fadeInLeft; color: white;">
+					Course | Point</a>
 				<br />
 				<h:commandLink action="#{indexController.logout()}" value="Logout" />
 			</h:form>
