@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.Staff;
 import entities.Student;
 
 public class StudentModel extends AbstractModel<Student> {
@@ -16,14 +17,15 @@ public class StudentModel extends AbstractModel<Student> {
 			if (!sessionFactory.getCurrentSession().getTransaction().isActive())
 				sessionFactory.getCurrentSession().getTransaction().begin();
 			List<Student> users = new ArrayList<Student>();
-			users = sessionFactory.getCurrentSession().createQuery("from Student where ID=? and Password=?")
+			users = sessionFactory.getCurrentSession()
+					.createQuery("from Student where ID=? and Password=?")
 					.setParameter(0, student.getId()).setParameter(1, Hash.getHashMD5(student.getPassword())).list();
 			if (users.size() != 0)
 				return users.get(0);
 			else
 				return null;
 		} catch (Exception e) {
-			return null;// TODO: handle exception
+			return null;
 		}
 	}
 

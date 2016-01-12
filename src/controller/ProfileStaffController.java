@@ -15,9 +15,9 @@ import entities.Staff;
 import model.Hash;
 import model.StaffModel;
 
-@ManagedBean(name = "profileController")
+@ManagedBean(name = "profileStaffController")
 @SessionScoped
-public class ProfileController implements Serializable {
+public class ProfileStaffController implements Serializable {
 	private ExternalContext externalContext;
 	private Map<String, Object> sessionMap;
 	private Map<String, String> params;
@@ -125,8 +125,8 @@ public class ProfileController implements Serializable {
 		externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		sessionMap = externalContext.getSessionMap();
 		params = externalContext.getRequestParameterMap();
-		if (sessionMap.get("user") != null) {
-			staff = (Staff) sessionMap.get("user");
+		if (sessionMap.get("userS") != null) {
+			staff = (Staff) sessionMap.get("userS");
 			_staff.setEmail(staff.getEmail());
 			_staff.setId(staff.getId());
 			_staff.setName(staff.getName());
@@ -137,8 +137,8 @@ public class ProfileController implements Serializable {
 			_staff.setAddress(staff.getAddress());
 		}
 
-		if (sessionMap.get("role") != null)
-			role = (Role) sessionMap.get("role");
+		if (sessionMap.get("roleS") != null)
+			role = (Role) sessionMap.get("roleS");
 
 		if (sessionMap.get("changeinfo") != null) {
 			sessionMap.put("changeinfo", null);
@@ -193,14 +193,13 @@ public class ProfileController implements Serializable {
 				_staff.setName(Jsoup.parse(_staff.getName()).text());
 				StaffModel staffModel = new StaffModel();
 				staffModel.update(_staff);
-				sessionMap.put("user", _staff);
+				sessionMap.put("userS", _staff);
 				sessionMap.put("changeinfo", true);
 			}
 			// SessionModel.reLoadPage();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Catch Save");
-
 			sessionMap.put("changeinfofalse", true);
 		}
 	}
@@ -221,14 +220,14 @@ public class ProfileController implements Serializable {
 			StaffModel staffModel = new StaffModel();
 			_staff.setPassword(Hash.getHashMD5(newPass));
 			staffModel.update(_staff);
-			sessionMap.put("user", _staff);
+			sessionMap.put("userS", _staff);
 			sessionMap.put("changepass", true);
 			// SessionModel.reLoadPage();
 			externalContext.redirect("profile.xhtml?pass=suc#changepass");
 		}
 	}
 
-	public ProfileController() {
+	public ProfileStaffController() {
 		System.out.println("ProfileController");
 	}
 

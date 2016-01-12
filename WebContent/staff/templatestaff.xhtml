@@ -68,7 +68,8 @@
 
 </h:head>
 <h:body styleClass="page-header-fixed">
-	<f:event listener="#{templateController.init()}" type="preRenderView"></f:event>
+	<f:event listener="#{loginStaffController.verifyLogin()}"
+		type="preRenderView"></f:event>
 
 	<div class="overlay"></div>
 	<form class="search-form" action="#" method="get">
@@ -208,7 +209,7 @@
 									class="fa fa-search"></i></a></li>
 							<li class="dropdown"><a href="#"
 								class="dropdown-toggle waves-effect waves-button waves-classic"
-								data-toggle="dropdown"> <span class="user-name">#{templateController.staff.name}<i
+								data-toggle="dropdown"> <span class="user-name">#{loginStaffController.staff.name}<i
 										class="fa fa-angle-down"></i></span></a>
 								<ul class="dropdown-menu dropdown-list" role="menu">
 									<li role="presentation"><a href="profile.xhtml"> <i
@@ -218,14 +219,14 @@
 									<li role="presentation" class="divider"></li>
 
 									<li role="presentation"><h:commandLink
-											action="#{loginController.logout()}">
+											action="#{loginStaffController.logout()}">
 											<i class="fa fa-sign-out m-r-xs"></i>Log out</h:commandLink></li>
 								</ul></li>
 							<li>
 								<!-- <a href="login.html"
 							class="log-out waves-effect waves-button waves-classic"> <span><i
 									class="fa fa-sign-out m-r-xs"></i>Log out</span>
-						</a> --> <h:commandLink action="#{loginController.logout()}"
+						</a> --> <h:commandLink action="#{loginStaffController.logout()}"
 									styleClass="log-out waves-effect waves-button waves-classic">
 									<span><i class="fa fa-sign-out m-r-xs"></i>Log out</span>
 								</h:commandLink>
@@ -242,14 +243,9 @@
 	<div class="page-sidebar sidebar">
 		<div class="page-sidebar-inner slimscroll">
 			<ul class="menu accordion-menu">
-				<li class="active"><a href="index.xhtml"
-					class="waves-effect waves-button"><span
-						class="menu-icon glyphicon glyphicon-home"></span>
-						<p>Dashboard</p></a></li>
-				<li><a href="perform.xhtml"
-					class="waves-effect waves-button"><span
+				<li class="active"><a href="index.xhtml" class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-user"></span>
-						<p>Perform </p></a></li>
+						<p>Perform</p></a></li>
 			</ul>
 		</div>
 		<!-- Page Sidebar Inner -->

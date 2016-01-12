@@ -16,19 +16,20 @@ public class StaffModel extends AbstractModel<Staff> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Staff login(Staff staff) {
+	public Staff login(Staff staff, int ir) {
 		try {
 			if (!sessionFactory.getCurrentSession().getTransaction().isActive())
 				sessionFactory.getCurrentSession().getTransaction().begin();
 			List<Staff> users = new ArrayList<Staff>();
-			users = sessionFactory.getCurrentSession().createQuery("from Staff where ID=? and Password=?")
+			users = sessionFactory.getCurrentSession()
+					.createQuery("from Staff where ID=? and Password=? and ID_Role=" + ir)
 					.setParameter(0, staff.getId()).setParameter(1, Hash.getHashMD5(staff.getPassword())).list();
 			if (users.size() != 0)
 				return users.get(0);
 			else
 				return null;
 		} catch (Exception e) {
-			return null;// TODO: handle exception
+			return null;
 		}
 	}
 
@@ -39,6 +40,20 @@ public class StaffModel extends AbstractModel<Staff> {
 				sessionFactory.getCurrentSession().getTransaction().begin();
 			List<Staff> staffs = new ArrayList<Staff>();
 			staffs = sessionFactory.getCurrentSession().createQuery("from Staff where ID_role = 2").list();
+			return staffs;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Staff> findStaffActive() {
+		try {
+			if (!sessionFactory.getCurrentSession().getTransaction().isActive())
+				sessionFactory.getCurrentSession().getTransaction().begin();
+			List<Staff> staffs = new ArrayList<Staff>();
+			staffs = sessionFactory.getCurrentSession().createQuery("from Staff where ID_role = 2 and Status = 1")
+					.list();
 			return staffs;
 		} catch (Exception e) {
 			return null;

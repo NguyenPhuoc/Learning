@@ -10,12 +10,11 @@ import javax.faces.context.FacesContext;
 
 import entities.Role;
 import entities.Staff;
-import model.SessionModel;
 import model.StaffModel;
 
-@ManagedBean(name = "loginController")
+@ManagedBean
 @SessionScoped
-public class LoginController {
+public class LoginStaffController {
 	private ExternalContext externalContext;
 	private Map<String, Object> sessionMap;
 	private Map<String, String> params;
@@ -68,8 +67,6 @@ public class LoginController {
 		params = externalContext.getRequestParameterMap();
 
 		if (!FacesContext.getCurrentInstance().isPostback()) {
-			System.out.println("init.template .ispostback");
-			// if (sessionMap.get("user") == null) {
 			if (!this.isLogin) {
 				try {
 					externalContext.redirect("login.xhtml");
@@ -77,7 +74,7 @@ public class LoginController {
 					e.printStackTrace();
 				}
 			} else {
-				staff = (Staff) sessionMap.get("user");
+				staff = (Staff) sessionMap.get("userS");
 			}
 		}
 	}
@@ -89,12 +86,12 @@ public class LoginController {
 
 		System.out.println("Login");
 		try {
-			Staff _staff = new StaffModel().login(this.staff, 1);
+			Staff _staff = new StaffModel().login(this.staff, 2);
 
 			if (_staff != null && _staff.getStatus() == 1) {
-				sessionMap.put("user", _staff);
+				sessionMap.put("userS", _staff);
 				Role role = _staff.getRole();
-				sessionMap.put("role", role);
+				sessionMap.put("roleS", role);
 				this.isLogin = true;
 				externalContext.redirect("index.xhtml");
 			} else {

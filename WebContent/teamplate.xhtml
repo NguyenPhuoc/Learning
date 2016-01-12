@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<title>Capture - Free Bootstrap App Landing Page</title>
+	<!--  App Description  -->
+	<meta name="description"
+		content="Capture is a free bootstrap v3.3.2 app landing page perfect to present you IOS, android or windows application in an elegant way." />
+	<meta charset="utf-8" />
+	<meta name="author" content="pixelhint.com" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="css/owl.transitions.css" />
+	<link rel="stylesheet" type="text/css" href="css/owl.carousel.css" />
+	<link rel="stylesheet" type="text/css" href="css/animate.css" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/ajaxchimp.js"></script>
+	<script type="text/javascript" src="js/scrollTo.js"></script>
+	<script type="text/javascript" src="js/owl.carousel.min.js"></script>
+	<script type="text/javascript" src="js/wow.js"></script>
+	<script type="text/javascript" src="js/parallax.js"></script>
+	<script type="text/javascript" src="js/nicescroll.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</h:head>
+<h:body>
+	<f:event listener="#{indexController.verifyLogin()}"
+		type="preRenderView"></f:event>
+
+	<!--  Header Section  -->
+	<header>
+	<div class="container">
+		<div class="logo pull-left animated wow fadeInLeft">
+			<a href="index.xhtml"> <img src="img/logo.png" alt="" title="" />
+			</a>
+		</div>
+
+
+		<nav class="pull-left"> </nav>
+
+		<div class="social pull-right"
+			style="margin-top: 45px; width: 200px; text-align: center;">
+			<style>
+.ipLogin {
+	border: 1px solid #bbb;
+	border-radius: 3px;
+	padding: 2px 5px;
+	width: 100%;
+	margin-bottom: 3px;
+}
+</style>
+			<h:form>
+				<a href="index.xhtml" class="animated wow fadeInLeft animated"
+					style="visibility: visible; animation-delay: 0s; animation-name: fadeInLeft; color: white;">
+					#{indexController.student.name} </a>
+				<br />
+				<h:commandLink action="#{indexController.logout()}" value="Logout" />
+			</h:form>
+
+		</div>
+	</div>
+	</header>
+
+	<!--  Contenr  -->
+	<ui:insert name="content"></ui:insert>
+	<!--  End Content  -->
+	<!--  Footer Section  -->
+	<footer style="padding: 0">
+	<p class="copyright animated wow fadeIn" data-wow-duration="2s"
+		style="margin: 0; padding: 50px;">
+		© 2015 <strong>Learning</strong>. All Rights Reserved
+	</p>
+	</footer>
+	<!--  End Footer Section  -->
+
+
+</h:body>
+</html>

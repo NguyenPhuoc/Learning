@@ -6,26 +6,25 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/admin/template.xhtml">
+<ui:composition template="/staff/templatestaff.xhtml">
 	<ui:define name="content">
 
-		<f:event listener="#{newPerform.init()}" type="preRenderView"></f:event>
+		<f:event listener="#{performController.init()}" type="preRenderView"></f:event>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-white"
-					style="display: #{newPerform.tableTag}">
+					style="display: #{performController.tableTag}">
 					<div class="panel-heading clearfix">
 						<h4 class="panel-title pull-left">List Register</h4>
 						<h:form prependId="false" style="float:right;">
-							<h:selectOneMenu value="#{newPerform.status}"
+							<h:selectOneMenu value="#{performController.status}"
 								style="height: 30px">
-								<f:selectItem itemValue="1" itemLabel="Perform new"></f:selectItem>
-								<f:selectItem itemValue="2" itemLabel="Set staff"></f:selectItem>
+								<f:selectItem itemValue="2" itemLabel="Perform new"></f:selectItem>
 								<f:selectItem itemValue="3" itemLabel="Mark"></f:selectItem>
 							</h:selectOneMenu>
 							<span style="padding: 5px"></span>
-							<h:commandButton action="#{newPerform.filter()}" value="Filter"
-								styleClass="btn btn-info">
+							<h:commandButton action="#{performController.filter()}"
+								value="Filter" styleClass="btn btn-info">
 							</h:commandButton>
 						</h:form>
 					</div>
@@ -50,14 +49,18 @@
 }
 </style>
 						<h:dataTable styleClass="table table-striped"
-							value="#{newPerform.performs}" var="p" rowClasses="a,b">
+							value="#{performController.performs}" var="p" rowClasses="a,b">
 							<h:column>
 								<f:facet name="header">#</f:facet>
-									#{newPerform.performs.indexOf(p) + 1}
+									#{performController.performs.indexOf(p) + 1}
 								</h:column>
 							<h:column>
 								<f:facet name="header">ID Student</f:facet>
-								<a href="student.xhtml?edit=${p.student.id}">${p.student.id}</a>
+								${p.student.id}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Name Student</f:facet>
+								${p.student.name}
 							</h:column>
 							<h:column>
 								<f:facet name="header">Name Course</f:facet>
@@ -72,20 +75,8 @@
 								<h:outputText value="#{p.point}" rendered="#{p.point != null}" />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Staff</f:facet>
-								<a href="staff.xhtml?edit=Staff1${p.staff.id}">${p.staff.name}</a>
-							</h:column>
-							<h:column>
 								<f:facet name="header">Option</f:facet>
-								<h:form rendered="#{p.status==1}">
-									<h:selectOneMenu value="#{newPerform._staff}">
-										<f:selectItems value="#{newPerform.staffs}" var="s"
-											itemValue="#{s.id}" itemLabel="#{s.name}" />
-									</h:selectOneMenu>
-									<h:commandButton action="#{newPerform.setStaffAss(p)}"
-										value="Set" />
-								</h:form>
-								<h:link outcome="newperform" value="Info">
+								<h:link outcome="index" value="Info">
 									<f:param name="sets" value="#{p.id.idStudent}"></f:param>
 									<f:param name="seta" value="#{p.id.idAssignment}"></f:param>
 								</h:link>
@@ -94,7 +85,8 @@
 
 					</div>
 				</div>
-				<div class="panel panel-white" style="display: #{newPerform.divSet}">
+				<div class="panel panel-white"
+					style="display: #{performController.divSet}">
 					<div class="panel-heading clearfix">
 						<h4 class="panel-title pull-left">Information Perform</h4>
 					</div>
@@ -104,7 +96,7 @@
 								<label for="input-placeholder" class="col-sm-2 control-label">ID
 									Student </label>
 								<div class="col-sm-10">
-									<h:outputText value="#{newPerform.perform.student.id}" />
+									<h:outputText value="#{performController.perform.student.id}" />
 								</div>
 							</div>
 							<!-- ====================== -->
@@ -112,7 +104,7 @@
 								<label for="input-placeholder" class="col-sm-2 control-label">Name
 									Student </label>
 								<div class="col-sm-10">
-									<h:outputText value="#{newPerform.perform.student.name}" />
+									<h:outputText value="#{performController.perform.student.name}" />
 								</div>
 							</div>
 							<!-- ====================== -->
@@ -121,7 +113,7 @@
 									Course </label>
 								<div class="col-sm-10">
 									<h:outputText
-										value="#{newPerform.perform.assignment.course.name}" />
+										value="#{performController.perform.assignment.course.name}" />
 								</div>
 							</div>
 							<!-- ====================== -->
@@ -129,7 +121,8 @@
 								<label for="input-placeholder" class="col-sm-2 control-label">Name
 									Assignment </label>
 								<div class="col-sm-10">
-									<h:outputText value="#{newPerform.perform.assignment.name}" />
+									<h:outputText
+										value="#{performController.perform.assignment.name}" />
 								</div>
 							</div>
 							<!-- ====================== -->
@@ -138,7 +131,7 @@
 									Perform </label>
 								<div class="col-sm-10">
 									<a
-										href="/Learning/javax.faces.resource/#{newPerform.perform.file}.xhtml?ln=rcs">Download
+										href="/Learning/javax.faces.resource/#{performController.perform.file}.xhtml?ln=rcs">Download
 										file Perform</a>
 								</div>
 							</div>
@@ -147,34 +140,35 @@
 								<label for="input-placeholder" class="col-sm-2 control-label">Date
 									Upload </label>
 								<div class="col-sm-10">
-									<h:outputText value="#{newPerform.perform.uploadDate}" />
+									<h:outputText value="#{performController.perform.uploadDate}" />
 								</div>
 							</div>
 							<!-- ====================== -->
 							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Point </label>
+								<label for="input-placeholder" class="col-sm-2 control-label">Point
+								</label>
 								<div class="col-sm-10">
-									<h:outputText value="#{newPerform.perform.point}" />
+									<h:outputText value="#{performController.perform.point}"
+										rendered="#{performController.perform.status==3}" />
+									<h:inputText value="#{performController.point}"
+										required="true" requiredMessage="Point Invalid"
+										validatorMessage="Invalid" id="point"
+										rendered="#{performController.perform.status==2}">
+										<f:validateRegex pattern="^[0-9]{1,3}$" />
+									</h:inputText>
+									<h:message for="point" />
 								</div>
 							</div>
-							<!-- ====================== -->
-							<div class="form-group">
-								<label for="input-placeholder" class="col-sm-2 control-label">Set
-									Staff </label>
-								<div class="col-sm-10">
-									<h:selectOneMenu value="#{newPerform.staff}"
-										style="height: 30px">
-										<f:selectItems value="#{newPerform.staffs}" var="s"
-											itemValue="#{s.id}" itemLabel="#{s.name}" />
-									</h:selectOneMenu>
-								</div>
-							</div>
+
 							<!-- ====================== -->
 							<div class="form-group">
 								<label for="input-placeholder" class="col-sm-2 control-label"></label>
 								<div class="col-sm-10">
-									<h:commandButton action="#{newPerform.saveStaffAss()}"
-										value="Save" styleClass="btn btn-success" />
+									<h:commandButton action="#{performController.saveStaffAss()}"
+										value="Save" styleClass="btn btn-success"
+										rendered="#{performController.perform.status==2}">
+										<f:ajax render="@form" execute="@form"></f:ajax>
+									</h:commandButton>
 								</div>
 							</div>
 						</h:form>

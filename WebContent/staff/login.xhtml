@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+	<!-- Title -->
+	<title>Modern | Login - Sign in</title>
+
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<meta charset="UTF-8" />
+	<meta name="description" content="Admin Dashboard Template" />
+	<meta name="keywords" content="admin,dashboard" />
+	<meta name="author" content="Steelcoders" />
+
+	<!-- Styles -->
+	<link
+		href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600'
+		rel='stylesheet' type='text/css' />
+	<link
+		href="assets/plugins/pace-master/themes/blue/pace-theme-flash.css"
+		rel="stylesheet" />
+	<link href="assets/plugins/uniform/css/uniform.default.min.css"
+		rel="stylesheet" />
+	<link href="assets/plugins/bootstrap/css/bootstrap.min.css"
+		rel="stylesheet" type="text/css" />
+	<link href="assets/plugins/fontawesome/css/font-awesome.css"
+		rel="stylesheet" type="text/css" />
+	<link href="assets/plugins/line-icons/simple-line-icons.css"
+		rel="stylesheet" type="text/css" />
+	<link href="assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css"
+		rel="stylesheet" type="text/css" />
+	<link href="assets/plugins/waves/waves.min.css" rel="stylesheet"
+		type="text/css" />
+	<link href="assets/plugins/switchery/switchery.min.css"
+		rel="stylesheet" type="text/css" />
+	<link href="assets/plugins/3d-bold-navigation/css/style.css"
+		rel="stylesheet" type="text/css" />
+
+	<!-- Theme Styles -->
+	<link href="assets/css/modern.min.css" rel="stylesheet" type="text/css" />
+	<link href="assets/css/themes/green.css" class="theme-color"
+		rel="stylesheet" type="text/css" />
+	<link href="assets/css/custom.css" rel="stylesheet" type="text/css" />
+
+	<script src="assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
+	<script src="assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</h:head>
+<h:body styleClass="page-login">
+	<f:event listener="#{loginStaffController.checkIsLogin()}"
+		type="preRenderView"></f:event>
+
+	<main class="page-content">
+	<div class="page-inner">
+		<div id="main-wrapper">
+			<div class="row">
+				<div class="col-md-3 center">
+					<div class="login-box">
+						<h:link outcome="/index"
+							styleClass="logo-name text-lg text-center">
+						MY SCHOOL
+					</h:link>
+						<p class="text-center m-t-md">Please login into your account.</p>
+						<h:form styleClass="m-t-md" prependId="false">
+							<div class="form-group">
+								<h:inputText styleClass="form-control"
+									value="#{loginStaffController.staff.id}" pt:type="text"
+									pt:placeholder="Username" required="true" />
+							</div>
+							<div class="form-group">
+								<h:inputText styleClass="form-control"
+									value="#{loginStaffController.staff.password}"
+									pt:type="password" pt:placeholder="Password" required="true" />
+							</div>
+							<p class="text-center m-t-xs text-sm text-danger">#{loginStaffController.notice}</p>
+
+							<h:commandButton action="#{loginStaffController.login()}"
+								value="Login" styleClass="btn btn-success btn-block" />
+
+							<a href="#" class="display-block text-center m-t-md text-sm">Forgot
+								Password?</a>
+						</h:form>
+						<p class="text-center m-t-xs text-sm">2015 &copy; Modern by
+							Steelcoders.</p>
+					</div>
+				</div>
+			</div>
+			<!-- Row -->
+		</div>
+		<!-- Main Wrapper -->
+	</div>
+	<!-- Page Inner --> </main>
+	<!-- Page Content -->
+
+
+	<!-- Javascripts -->
+	<script src="assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+	<script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<script src="assets/plugins/pace-master/pace.min.js"></script>
+	<script src="assets/plugins/jquery-blockui/jquery.blockui.js"></script>
+	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="assets/plugins/switchery/switchery.min.js"></script>
+	<script src="assets/plugins/uniform/jquery.uniform.min.js"></script>
+	<script src="assets/plugins/offcanvasmenueffects/js/classie.js"></script>
+	<script src="assets/plugins/waves/waves.min.js"></script>
+	<script src="assets/js/modern.min.js"></script>
+
+</h:body>
+</html>

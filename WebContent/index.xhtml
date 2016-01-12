@@ -4,7 +4,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 	<title>Capture - Free Bootstrap App Landing Page</title>
@@ -33,34 +34,58 @@
 	<script type="text/javascript" src="js/main.js"></script>
 </h:head>
 <h:body>
+	<f:event listener="#{indexController.init()}" type="preRenderView"></f:event>
+
 	<!--  Header Section  -->
 	<header>
 	<div class="container">
 		<div class="logo pull-left animated wow fadeInLeft">
-			<img src="img/logo.png" alt="" title="" />
+			<a href="index.xhtml"> <img src="img/logo.png" alt="" title="" />
+			</a>
 		</div>
 
 
 		<nav class="pull-left">
 		<ul class="list-unstyled">
 			<li class="animated wow fadeInLeft" data-wow-delay="0s"><a
-				href="#about">About</a></li>
-			<li class="animated wow fadeInLeft" data-wow-delay=".1s"><a
-				href="#app_features">Features</a></li>
+				href="#about">FAQs</a></li>
 			<li class="animated wow fadeInLeft" data-wow-delay=".2s"><a
-				href="#testimonials">Testimonials</a></li>
+				href="#testimonials">Feedback</a></li>
 		</ul>
 		</nav>
 
-		<div class="social pull-right">
-			<ul class="list-unstyled">
-				<li class="animated wow fadeInRight" data-wow-delay=".2s"><a
-					href="#"><img src="img/facebook.png" alt="" title="" /></a></li>
-				<li class="animated wow fadeInRight" data-wow-delay=".1s"><a
-					href="#"><img src="img/twitter.png" alt="" title="" /></a></li>
-				<li class="animated wow fadeInRight" data-wow-delay="0s"><a
-					href="#"><img src="img/google.png" alt="" title="" /></a></li>
-			</ul>
+		<div class="social pull-right"
+			style="margin-top: 30px; width: 200px; text-align: center;">
+			<style>
+.ipLogin {
+	border: 1px solid #bbb;
+	border-radius: 3px;
+	padding: 2px 5px;
+	width: 100%;
+	margin-bottom: 3px;
+}
+</style>
+			<h:form rendered="#{!indexController.login}">
+				<h:inputText value="#{indexController.student.id}"
+					styleClass="ipLogin" />
+				<br />
+				<h:inputSecret value="#{indexController.student.password}"
+					styleClass="ipLogin" />
+				<br />
+				<h:commandButton action="#{indexController.login()}" value="Login"
+					styleClass="btn btn-default" />
+			</h:form>
+			<h:form rendered="#{indexController.login}">
+				<a href="index.xhtml" class="animated wow fadeInLeft animated"
+					style="visibility: visible; animation-delay: 0s; animation-name: fadeInLeft; color: white;">
+					#{indexController.student.name} </a>
+				<br />
+				<a href="student.xhtml" class="animated wow fadeInLeft animated"
+					style="visibility: visible; animation-delay: 0s; animation-name: fadeInLeft; color: white;">
+					Course | Point</a>
+					<br/>
+					<h:commandLink action="#{indexController.logout()}" value="Logout" />
+			</h:form>
 		</div>
 
 		<span class="burger_icon">menu</span>
@@ -74,27 +99,7 @@
 
 
 	<!--  Hero Section  -->
-	<section class="hero" id="hero">
-	<div class="container">
-		<div class="caption">
-			<h1 class="text-uppercase  animated wow fadeInLeft">Take Photos
-				Like A Pro.</h1>
-			<p class="text-lowercase  animated wow fadeInLeft">With only your
-				iphone and capture app you can take stunning image like a
-				professional Photographer.</p>
 
-			<a
-				href="http://pixelhint.com/capture-free-responsive-bootstrap-app-landing-page-theme"
-				class="app_store_btn text-uppercase animated wow fadeInLeft"> <i
-				class="iphone_icon"></i> <span>Iphone App</span>
-			</a> <a
-				href="http://pixelhint.com/capture-free-responsive-bootstrap-app-landing-page-theme"
-				class="app_store_btn text-uppercase animated wow fadeInLeft"> <i
-				class="android_icon"></i> <span>Android App</span>
-			</a>
-		</div>
-	</div>
-	</section>
 	<!--  End Hero Section  -->
 
 
@@ -129,38 +134,31 @@
 
 
 	<!--  About Section  -->
+	<!-- ============================||||||||||||||||||||||||||||||============================ -->
 	<section class="about" id="about">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6 text-center animated wow fadeInLeft">
-				<div class="iphone">
-					<img src="img/iphone.png" alt="" title="" />
+			<div class="col-md-6 animated wow fadeInLeft">
+				<div class="features_list">
+					<h1 class="text-uppercase">FAQs</h1>
+					<h:form>
+						<c:forEach items="#{indexController.faqs}" var="f" begin="0"
+							end="#{(indexController.faqs.size()-1)/2}">
+							<span style="font-weight: bold;">#{f.name}</span>
+							<p>#{f.detail}</p>
+						</c:forEach>
+					</h:form>
 				</div>
 			</div>
 			<div class="col-md-6 animated wow fadeInRight">
 				<div class="features_list">
-					<h1 class="text-uppercase">Capture unforgettable moments.</h1>
-					<p>Seuismod ligula ipsum vulputate tellus quisque dictum tortor
-						at purus faucibus tincidunt, pellentesque habitant morbi tristique
-						senectus et netus et malesuada fames ac turpis egestas.</p>
-					<ul class="list-unstyled">
-						<li class="camera_icon"><span>Euismod ligula ipsum
-								vulputate tellus.</span></li>
-						<li class="video_icon"><span>Morbi non efficitur nibh
-								sit amet est eros.</span></li>
-						<li class="eye_icon"><span>Fusce faucibus ante
-								liberonec luctus egestas.</span></li>
-						<li class="pic_icon"><span>Quisque pretium malesuada
-								ornare.</span></li>
-						<li class="loc_icon"><span>Cras interdum vestibulum
-								dolor.</span></li>
-					</ul>
-					<!-- 				<a href="#" class="app_store_btn text-uppercase" id="play_video"
-						data-video="http://www.youtube.com/embed/Bm3NV3gGB2w?autoplay=1&showinfo=0">
-						<i class="play_icon"></i> <span>About Video</span>
-					</a> 
-	-->
-					<a href="#hero" class="app_link">Get the app</a>
+					<h:form>
+						<c:forEach items="#{indexController.faqs}" var="f"
+							begin="#{indexController.faqs.size()/2}">
+							<span style="font-weight: bold;">#{f.name}</span>
+							<p>#{f.detail}</p>
+						</c:forEach>
+					</h:form>
 				</div>
 			</div>
 		</div>
@@ -178,62 +176,7 @@
 
 
 	<!--  App Features Section  -->
-	<section class="app_features" id="app_features">
-	<div class="container">
 
-		<div class="row text-center">
-			<div class="col-sm-4 col-md-4 details animated wow fadeInDown"
-				data-wow-delay="0s">
-				<img src="img/f_icon1.png" alt="" title="" />
-				<h1 class="text-uppercase">malesuada fames turpis.</h1>
-				<p class="text-lowercase">vel ultrices mauris libero id diam.
-					Vivamus tellus sagittis facilisis nisi quis mollis risus quisque
-					ultrices elit.</p>
-			</div>
-			<div class="col-sm-4 col-md-4 details animated wow fadeInDown"
-				data-wow-delay=".1s">
-				<img src="img/f_icon2.png" alt="" title="" />
-				<h1 class="text-uppercase">malesuada fames turpis.</h1>
-				<p class="text-lowercase">vel ultrices mauris libero id diam.
-					Vivamus tellus sagittis facilisis nisi quis mollis risus quisque
-					ultrices elit.</p>
-			</div>
-			<div class="col-sm-4 col-md-4 details animated wow fadeInDown"
-				data-wow-delay=".2s">
-				<img src="img/f_icon3.png" alt="" title="" />
-				<h1 class="text-uppercase">malesuada fames turpis.</h1>
-				<p class="text-lowercase">vel ultrices mauris libero id diam.
-					Vivamus tellus sagittis facilisis nisi quis mollis risus quisque
-					ultrices elit.</p>
-			</div>
-			<div class="col-sm-4 col-md-4 details animated wow fadeInDown"
-				data-wow-delay="0s">
-				<img src="img/f_icon4.png" alt="" title="" />
-				<h1 class="text-uppercase">malesuada fames turpis.</h1>
-				<p class="text-lowercase">vel ultrices mauris libero id diam.
-					Vivamus tellus sagittis facilisis nisi quis mollis risus quisque
-					ultrices elit.</p>
-			</div>
-			<div class="col-sm-4 col-md-4 details animated wow fadeInDown"
-				data-wow-delay=".1s">
-				<img src="img/f_icon5.png" alt="" title="" />
-				<h1 class="text-uppercase">malesuada fames turpis.</h1>
-				<p class="text-lowercase">vel ultrices mauris libero id diam.
-					Vivamus tellus sagittis facilisis nisi quis mollis risus quisque
-					ultrices elit.</p>
-			</div>
-			<div class="col-sm-4 col-md-4 details animated wow fadeInDown"
-				data-wow-delay=".2s">
-				<img src="img/f_icon6.png" alt="" title="" />
-				<h1 class="text-uppercase">malesuada fames turpis.</h1>
-				<p class="text-lowercase">vel ultrices mauris libero id diam.
-					Vivamus tellus sagittis facilisis nisi quis mollis risus quisque
-					ultrices elit.</p>
-			</div>
-		</div>
-
-	</div>
-	</section>
 	<!--  And App Features Section  -->
 
 
@@ -242,18 +185,50 @@
 
 
 	<!--  Testimonials Section  -->
-	<section class="testimonials animated wow fadeIn" id="testimonials"
+	<section class="animated wow fadeIn app_features" id="testimonials"
 		data-wow-duration="2s">
 	<div class="container">
-		<div class="testimonials_list">
-		<h:form>
-			<h:inputText></h:inputText>
-		</h:form>
-			
-			<div id="slider_nav">
-				<div id="prev_arrow"></div>
-				<div id="next_arrow"></div>
-			</div>
+		<div style="text-align: center;">
+			<style>
+.ip {
+	border: 1px solid #bbb;
+	border-radius: 3px;
+	padding: 5px;
+	width: 300px;
+}
+</style>
+
+			<h1 class="text-uppercase" style="margin: 0 0 50px 0;">Feedback</h1>
+			<h:form prependId="false">
+
+				<h:inputText maxlength="50" required="true"
+					pt:placeholder="You Name" value="#{indexController.feedback.name}"
+					requiredMessage="Invalid" id="name" styleClass="ip" />
+				<br />
+				<h:message for="name" />
+				<br />
+				<h:inputText value="#{indexController.feedback.email}"
+					pt:placeholder="You Email" maxlength="254" required="true"
+					id="email" requiredMessage="Invalid"
+					validatorMessage="Invalid Email" styleClass="ip">
+					<f:validateRegex pattern="#{regular.regexEmail}" />
+				</h:inputText>
+				<br />
+				<h:message for="email" />
+				<br />
+				<h:inputTextarea value="#{indexController.feedback.comment}"
+					required="true" requiredMessage="Invalid"
+					pt:placeholder="Comment...!" id="comment" styleClass="ip">
+					<f:validateLength minimum="1" maximum="500"></f:validateLength>
+				</h:inputTextarea>
+				<br />
+				<h:message for="comment" />
+				<br />
+				<h:commandButton action="#{indexController.sendFeedback()}"
+					value="Send Feedback" styleClass="btn btn-default">
+					<f:ajax render="@form" execute="@form"></f:ajax>
+				</h:commandButton>
+			</h:form>
 		</div>
 	</div>
 	</section>
@@ -264,43 +239,11 @@
 
 
 
-	<!--  Email Subscription Section  -->
-	<section class="sub_box">
-	<p class="cta_text animated wow fadeInDown">Join Our Liste and stay
-		updated!</p>
-	<form
-		action="http://pixelhint.us3.list-manage.com/subscribe/post?u=9cf3b8b1cfc597a436b9964d3&amp;id=2449ed590e"
-		metohd="post" class="animated wow fadeIn" data-wow-duration="2s"
-		id="submit_form">
-		<input type="email" id="mc-email" placeholder="Enter your email" />
-		<button type="submit" id="mc_submit">
-			<i class="icon"></i>
-		</button>
-	</form>
-	<div class="message" id="error_msg">Please Enter A Valid Email.</div>
-	<div class="message" id="success_msg">Thank You For Your
-		Subscription.</div>
-	</section>
-	<!--  End Email Subscription Section  -->
-
-
-
-
-
 
 	<!--  Footer Section  -->
 	<footer>
-	<ul class="list-unstyled list-inline app_platform">
-		<li class="animated wow fadeInDown" data-wow-delay="0s"><a
-			href="#"><img src="img/android_icon.png" alt="" title="" /></a></li>
-		<li class="animated wow fadeInDown" data-wow-delay=".1s"><a
-			href="#"><img src="img/ios_icon.png" alt="" title="" /></a></li>
-		<li class="animated wow fadeInDown" data-wow-delay=".2s"><a
-			href="#"><img src="img/windows_icon.png" alt="" title="" /></a></li>
-	</ul>
 	<p class="copyright animated wow fadeIn" data-wow-duration="2s">
-		© 2015 <a href="http://pixelhint.com/" target="_blank"><strong>Pixelhint.com</strong></a>.
-		All Rights Reserved
+		© 2015 <strong>Learning</strong>. All Rights Reserved
 	</p>
 	</footer>
 	<!--  End Footer Section  -->

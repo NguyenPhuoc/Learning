@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/staff/templatestaff.xhtml">
+	<ui:define name="content">
+		<f:event listener="#{profileStaffController.Init()}" type="preRenderView"></f:event>
+		<div class="toastr"></div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-white">
+					<div class="panel-heading clearfix">
+						<h4 class="panel-title">Information profile</h4>
+					</div>
+					<div class="panel-body">
+						<h:form styleClass="form-horizontal" prependId="false">
+							<!-- ======================= -->
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Username </label>
+								<div class="col-sm-10">
+									<p class="form-control-static">#{profileStaffController.staff.id}</p>
+								</div>
+							</div>
+							<!-- ======================= -->
+							<div class="form-group">
+								<label for="input-readonly" class="col-sm-2 control-label">Role
+								</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="input-readonly"
+										placeholder="#{profileStaffController.role.name}"
+										value="#{profileStaffController.role.name}" readonly="" />
+								</div>
+							</div>
+							<!-- ===================== -->
+							<div class="form-group">
+								<label for="input-placeholder" class="col-sm-2 control-label">Email
+								</label>
+								<div class="col-sm-10">
+									<h:inputText value="#{profileStaffController._staff.email}"
+										pt:placeholder="#{profileStaffController.staff.email}"
+										styleClass="form-control" maxlength="254" pt:type="email"
+										required="true" requiredMessage="Invalid email"
+										validatorMessage="Invalid email" id="email">
+										<f:validateRegex pattern="#{regular.regexEmail}" />
+										<f:validateLength maximum="254"></f:validateLength>
+									</h:inputText>
+									<h:message for="email" />
+								</div>
+							</div>
+							<!-- ====================== -->
+							<div class="form-group">
+								<label for="input-placeholder" class="col-sm-2 control-label">Full
+									name </label>
+								<div class="col-sm-10">
+									<h:inputText value="#{profileStaffController._staff.name}"
+										pt:placeholder="#{profileStaffController.staff.name}"
+										required="true" requiredMessage="Invalid name"
+										validatorMessage="Invalid name" id="name"
+										styleClass="form-control" maxlength="50">
+										<f:validateRegex pattern="#{regular.regexName}" />
+										<f:validateLength maximum="50"></f:validateLength>
+									</h:inputText>
+									<h:message for="name" />
+								</div>
+							</div>
+							<!-- ====================== -->
+							<div class="form-group">
+								<label for="input-placeholder" class="col-sm-2 control-label">Address
+								</label>
+								<div class="col-sm-10">
+									<h:inputText value="#{profileStaffController._staff.address}"
+										pt:placeholder="#{profileStaffController.staff.address}"
+										required="true" requiredMessage="Invalid address"
+										validatorMessage="Invalid address" id="address"
+										styleClass="form-control" maxlength="100">
+										<f:validateRegex pattern="#{regular.regexAddress}" />
+										<f:validateLength maximum="100"></f:validateLength>
+									</h:inputText>
+									<h:message for="address" />
+								</div>
+							</div>
+							<!-- ====================== -->
+							<div class="form-group">
+								<label for="input-placeholder" class="col-sm-2 control-label"></label>
+								<div class="col-sm-10">
+									<h:commandButton action="#{profileStaffController.saveChangeInfo()}"
+										value="Save change" styleClass="btn btn-info">
+										<f:ajax execute="@form" render="@form"></f:ajax>
+									</h:commandButton>
+									<br /> <br />
+									<div class="alert alert-success"
+										style="width: 350px; display: #{profileStaffController.displayChangeInfo}">
+										<b>Save change successfully</b>
+									</div>
+									<div class="alert alert-danger"
+										style="width: 350px; display: #{profileStaffController.displayChangeInfoFalse}">
+										<b>Save change fail</b>
+									</div>
+								</div>
+							</div>
+							<!-- ====================== -->
+
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" id="changepass">
+			<div class="col-md-12">
+				<div class="panel panel-white">
+					<div class="panel-heading clearfix">
+						<h4 class="panel-title">Change password</h4>
+					</div>
+					<div class="panel-body">
+						<h:form styleClass="form-horizontal" prependId="false">
+							<!-- ======================= -->
+							<div class="form-group">
+								<label for="input-password" class="col-sm-2 control-label">Old
+									Password</label>
+								<div class="col-sm-10">
+									<h:inputSecret value="#{profileStaffController.pass}"
+										pt:placeholder="old password" id="oldPass" required="true"
+										requiredMessage="Invalid password" styleClass="form-control"
+										maxlength="32"
+										validatorMessage="Password invalid, the shortest is 6 characters.">
+										<f:validateLength maximum="32" minimum="6"></f:validateLength>
+									</h:inputSecret>
+									<h:message for="oldPass" />
+								</div>
+							</div>
+							<!-- ======================= -->
+							<div class="form-group">
+								<label for="input-password" class="col-sm-2 control-label">New
+									password</label>
+								<div class="col-sm-10">
+									<h:inputSecret value="#{profileStaffController.newPass}"
+										pt:placeholder="new password" id="newPass" required="true"
+										requiredMessage="Invalid password" styleClass="form-control"
+										maxlength="32"
+										validatorMessage="Password invalid, the shortest is 6 characters.">
+										<f:validateLength maximum="32" minimum="6"></f:validateLength>
+									</h:inputSecret>
+									<h:message for="newPass" />
+								</div>
+							</div>
+							<!-- ======================= -->
+							<div class="form-group">
+								<label for="input-password" class="col-sm-2 control-label">Confirm
+									new</label>
+								<div class="col-sm-10">
+									<h:inputSecret value="#{profileStaffController.rePass}"
+										pt:placeholder="confirm new password" id="rePass"
+										required="true" requiredMessage="Invalid password"
+										styleClass="form-control" maxlength="32"
+										validatorMessage="Password invalid, the shortest is 6 characters.">
+										<f:validateLength maximum="32" minimum="6"></f:validateLength>
+									</h:inputSecret>
+									<h:message for="rePass" />
+								</div>
+							</div>
+							<!-- ======================= -->
+							<!-- ====================== -->
+							<div class="form-group">
+								<label for="input-placeholder" class="col-sm-2 control-label"></label>
+								<div class="col-sm-10">
+									<h:commandButton action="#{profileStaffController.saveChangePass()}"
+										value="Change password" styleClass="btn btn-info">
+										<f:ajax execute="@form" render="@form"></f:ajax>
+									</h:commandButton>
+									<br /> <br />
+									<div class="alert alert-success"
+										style="width: 350px; display: #{profileStaffController.displayChangePass}">
+										<b>Change password successfully</b>
+									</div>
+									<div class="alert alert-danger"
+										style="width: 350px; display: #{profileStaffController.displayPassInvalid}">
+										<b>Incorrect password</b>
+									</div>
+									<div class="alert alert-warning"
+										style="width: 350px; display: #{profileStaffController.displayPassComfirm}">
+										<b>Passwords do not match</b>
+									</div>
+								</div>
+							</div>
+							<!-- ====================== -->
+
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

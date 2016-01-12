@@ -16,7 +16,7 @@ import model.StaffModel;
 @SessionScoped
 public class TemplateController {
 	public TemplateController() {
-		System.out.println("TemplateController.Contructor");
+		System.out.println("TemplateController.Contructor()");
 	}
 
 	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -36,7 +36,7 @@ public class TemplateController {
 	public void init() {
 		System.out.println("init.template");
 		if (!FacesContext.getCurrentInstance().isPostback()) {
-			System.out.println("init.template .ispostback");
+			System.out.println("init.template.ispostback()");
 			if (sessionMap.get("user") == null) {
 				// SessionModel.redirect("login.xhtml");
 				try {
