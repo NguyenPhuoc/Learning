@@ -36,4 +36,18 @@ public class PerformModel extends AbstractModel<Perform> {
 			return new ArrayList<Perform>();
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Perform> findPerformStudent(String student) {
+		try {
+			if (!sessionFactory.getCurrentSession().getTransaction().isActive())
+				sessionFactory.getCurrentSession().getTransaction().begin();
+			List<Perform> performs = new ArrayList<Perform>();
+			performs = sessionFactory.getCurrentSession()
+					.createQuery("from Perform where ID_Student = '" + student + "'").list();
+			return performs;
+		} catch (Exception e) {
+			return new ArrayList<Perform>();
+		}
+	}
 }

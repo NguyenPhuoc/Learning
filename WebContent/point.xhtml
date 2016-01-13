@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/teamplate.xhtml">
+	<ui:define name="content">
+		<f:event listener="#{pointClient.init()}" type="preRenderView"></f:event>
+		<section class="about" id="app_features" style="padding: 50px 0">
+		<div class="container">
+			<h1 class="text-uppercase fadeInLeft animated">Point</h1>
+			<h:form>
+				<h:dataTable styleClass="table table-striped fadeInDown animated"
+					value="#{pointClient.performs}" var="p">
+					<h:column>
+						<f:facet name="header">#</f:facet>
+									#{pointClient.performs.indexOf(p) + 1}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Name Course</f:facet>
+						${p.assignment.course.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Name Assginment</f:facet>
+									${p.assignment.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Staff</f:facet>
+									${p.staff.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Point</f:facet>
+									${p.point}
+					</h:column>
+				</h:dataTable>
+			</h:form>
+
+		</div>
+		</section>
+	</ui:define>
+</ui:composition>
+</html>
