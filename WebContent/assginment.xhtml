@@ -2,64 +2,74 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 <ui:composition template="/teamplate.xhtml">
 	<ui:define name="content">
 		<f:event listener="#{assignmentClient.init()}" type="preRenderView"></f:event>
 		<section class="about" id="app_features" style="padding: 50px 0">
 		<div class="container">
-			<h1 class="text-uppercase fadeInLeft animated">Course</h1>
-			<h:form rendered="#{courseClient.divTable}">
+			<h1 class="text-uppercase fadeInLeft animated">Assignment</h1>
+			<h:form rendered="#{assignmentClient.divTable}">
 				<h:dataTable styleClass="table table-striped fadeInDown animated"
-					value="#{assignmentClient.assignments}" var="c">
+					value="#{assignmentClient.assignments}" var="a">
 					<h:column>
 						<f:facet name="header">#</f:facet>
-									#{courseClient.courses.indexOf(c) + 1}
+									#{assignmentClient.assignments.indexOf(a) + 1}
 								</h:column>
 					<h:column>
-						<f:facet name="header">Name</f:facet>
-
-						<a href="course.xhtml?course=#{c.id}">${c.name}</a>
+						<f:facet name="header">Name Assignment</f:facet>
+						<a href="assginment.xhtml?assig=#{a.id}">${a.name}</a>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Name Course</f:facet>
+						<a href="course.xhtml?course=#{a.course.id}">${a.course.name}</a>
 					</h:column>
 					<h:column>
 						<f:facet name="header">End Date</f:facet>
-									${c.endDate}
-								</h:column>
+									${a.endDate}
+					</h:column>
+					<h:column>
+						<f:facet name="header">File Download</f:facet>
+						<a href="/Learning/javax.faces.resource/#{a.file}.xhtml?ln=rcs">Download
+							here</a>
+					</h:column>
 					<h:column>
 						<f:facet name="header">Option</f:facet>
-						<h:commandLink action="#{courseClient.register(c)}"
-							value="Register" rendered="#{courseClient.check(c)}" />
+						<a href="assginment.xhtml?assig=#{a.id}">View</a>
 					</h:column>
 				</h:dataTable>
 			</h:form>
-			<h:panelGroup rendered="#{courseClient.divCourse}">
-				<h:form styleClass="form-horizontal">
+			<h:panelGroup rendered="#{assignmentClient.divAssig}">
+				<h:form styleClass="form-horizontal" enctype="multipart/form-data">
 					<div class="form-group">
 						<label for="input-placeholder" class="col-sm-2 control-label">Name
 							Course: </label>
 						<div class="col-sm-10">
-							<label for="input-placeholder" class="control-label"> <h:outputText
-									value="#{courseClient.course.name}" />
+							<label for="input-placeholder" class="control-label"> <a
+								href="course.xhtml?course=#{assignmentClient.assig.course.id}">
+									<h:outputText value="#{assignmentClient.assig.course.name}" />
+							</a>
 							</label>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="input-placeholder" class="col-sm-2 control-label">Dtails
-							Course: </label>
+						<label for="input-placeholder" class="col-sm-2 control-label">Name
+							Assignment: </label>
 						<div class="col-sm-10">
 							<label for="input-placeholder" class="control-label col-sm-10"
 								style="text-align: left; padding: 7px 0 0 0;"> <h:outputText
-									value="#{courseClient.course.detail}" />
+									value="#{assignmentClient.assig.name}" />
 							</label>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="input-placeholder" class="col-sm-2 control-label">Start
-							Date: </label>
+						<label for="input-placeholder" class="col-sm-2 control-label">Comment:
+						</label>
 						<div class="col-sm-10">
 							<label for="input-placeholder" class="control-label"> <h:outputText
-									value="#{courseClient.course.startDate}" />
+									value="#{assignmentClient.assig.comment}" />
 							</label>
 						</div>
 					</div>
@@ -68,21 +78,44 @@
 							Date: </label>
 						<div class="col-sm-10">
 							<label for="input-placeholder" class="control-label"> <h:outputText
-									value="#{courseClient.course.endDate}" />
+									value="#{assignmentClient.assig.endDate}" />
 							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-placeholder" class="col-sm-2 control-label">File
+							Download: </label>
+						<div class="col-sm-10">
+							<label for="input-placeholder" class="control-label"> <a
+								href="/Learning/javax.faces.resource/#{assignmentClient.assig.file}.xhtml?ln=rcs">Download
+									here</a>
+							</label>
+						</div>
+						<div class="form-group">
+							<label for="input-placeholder" class="col-sm-2 control-label">File
+								Perform: </label>
+							<div class="col-sm-10">
+								<h:inputFile value="#{assignmentClient.p}"
+									pt:accept="application/msword, application/pdf, .docx, .rar, .zip"
+									required="true" requiredMessage="Choose file!" id="_file">
+								</h:inputFile>
+								<h:message for="_file" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="input-placeholder" class="col-sm-2 control-label">
 						</label>
 						<div class="col-sm-10">
-							<h:commandButton
-								action="#{courseClient.register(courseClient.course)}"
-								value="Register" styleClass="btn btn-success" />
+							<h:commandButton action="#{assignmentClient.submit()}"
+								value="Submit" styleClass="btn btn-success">
+								<f:ajax execute="@form" render="@form" />
+							</h:commandButton>
 						</div>
 					</div>
 				</h:form>
 			</h:panelGroup>
+
 		</div>
 		</section>
 	</ui:define>

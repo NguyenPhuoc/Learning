@@ -86,7 +86,7 @@ public class IndexController {
 
 	private ExternalContext externalContext;
 	private Map<String, Object> sessionMap;
-	private List<Faq> faqs = new ArrayList<Faq>();
+	private List<Faq> faqs = new FaqModel().findAll();
 	private Feedback feedback = new Feedback();
 	private Student student = new Student();
 	private boolean isLogin = false;

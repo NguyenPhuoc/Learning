@@ -10,7 +10,7 @@ import javax.servlet.http.Part;
 public class UploadHelper {
 
 	private final int limit_max_size = 10240000;
-	private final String limit_type_file = "doc|docx|pdf";
+	private final String limit_type_file = "doc|docx|pdf|rar|zip";
 	private final String path_to = "/resources/rcs";
 
 	public UploadHelper() {

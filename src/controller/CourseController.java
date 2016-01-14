@@ -38,7 +38,7 @@ public class CourseController {
 				tableCourse = "none";
 				divEdit = "none";
 			} else if (paramEdit != null) {
-				String paramAss = params.get("ass");
+				String paramAss = params.get("assig");
 				try {
 					course = new CourseModel().find(Integer.parseInt(paramEdit));
 				} catch (Exception e) {
@@ -185,7 +185,7 @@ public class CourseController {
 				assignment.setFile(fi);
 				new AssignmentModel().update(assignment);
 				sessionMap.put("editSucA", true);
-				externalContext.redirect("course.xhtml?edit=" + course.getId() + "&ass=" + assignment.getId());
+				externalContext.redirect("course.xhtml?edit=" + course.getId() + "&assig=" + assignment.getId());
 			}
 		} catch (Exception e) {
 			sessionMap.put("editErrA", true);

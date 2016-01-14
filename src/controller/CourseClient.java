@@ -28,19 +28,21 @@ public class CourseClient {
 			String paramCourse = params.get("course");
 			if (paramCourse != null) {
 				try {
-					course = new CourseModel().find(Integer.parseInt(paramCourse));
-				} catch (Exception e) {
-					course = null;
-				} finally {
-					if (course != null) {
-						divTable = false;
-						divCourse = true;
-					} else {
+					divCourse = false;
+					divTable = true;
+					if (courses.size() == 0)
 						courses = new CourseModel().findAllClent(new java.text.SimpleDateFormat("yyyy-MM-dd")
 								.format(java.util.Calendar.getInstance().getTime()));
-						divTable = true;
-						divCourse = false;
+					for (Course _course : courses) {
+						if (_course.getId() == Integer.parseInt(paramCourse)) {
+							this.course = _course;
+							divCourse = true;
+							divTable = false;
+						}
 					}
+				} catch (Exception e) {
+					divCourse = false;
+					divTable = true;
 				}
 			} else {
 				courses = new CourseModel().findAllClent(new java.text.SimpleDateFormat("yyyy-MM-dd")
@@ -67,6 +69,11 @@ public class CourseClient {
 		Student student = (Student) sessionMap.get("student");
 		boolean ck = new CourseregisterModel().check(student.getId(), course.getId().toString());
 		return ck;
+	}
+
+	public void view(Course course) {
+		this.course = course;
+		divCourse = true;
 	}
 
 	private ExternalContext externalContext;

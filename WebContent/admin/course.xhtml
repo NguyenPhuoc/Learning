@@ -336,7 +336,7 @@
 										Assignment </label>
 									<div class="col-sm-10">
 										<h:inputFile value="#{courseController.p}"
-											pt:accept="application/msword, application/pdf, .docx"
+											pt:accept="application/msword, application/pdf, .docx, .rar, .zip"
 											required="true" requiredMessage="Choose file!" id="_file">
 										</h:inputFile>
 										<h:message for="_file" />
@@ -359,7 +359,7 @@
 									<label for="input-placeholder" class="col-sm-2 control-label"></label>
 									<div class="col-sm-10">
 										<h:commandButton action="#{courseController.saveAss()}"
-											value="Save changeaaaa" styleClass="btn btn-info">
+											value="Save change" styleClass="btn btn-info">
 											<f:ajax execute="@form" render="@form"></f:ajax>
 										</h:commandButton>
 
@@ -404,7 +404,7 @@
 									<f:facet name="header">Option</f:facet>
 									<h:link value="Edit" outcome="course">
 										<f:param name="edit" value="#{courseController.course.id}"></f:param>
-										<f:param name="ass" value="#{a.id}"></f:param>
+										<f:param name="assig" value="#{a.id}"></f:param>
 									</h:link>
 								</h:column>
 							</h:dataTable>
@@ -469,7 +469,7 @@
 											href="/Learning/javax.faces.resource/#{courseController.assignment.file}.xhtml?ln=rcs">Download
 											file Assignment</a>
 										<h:inputFile value="#{courseController.p}"
-											pt:accept="application/msword, application/pdf, .docx"></h:inputFile>
+											pt:accept="application/msword, application/pdf, .docx, .rar, .zip"></h:inputFile>
 									</div>
 								</div>
 								<!-- ======================= -->

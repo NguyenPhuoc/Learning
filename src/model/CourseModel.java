@@ -23,4 +23,6 @@ public class CourseModel extends AbstractModel<Course> {
 			return new ArrayList<Course>();
 		}
 	}
+
+
 }
