@@ -22,6 +22,10 @@ public class StudentController {
 	private Map<String, String> params = externalContext.getRequestParameterMap();
 
 	public void init() {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
+		sessionMap.put("title", "Student");
 		if (!SessionModel.isPostback()) {
 			String paramAdd = params.get("add");
 			String paramEdit = params.get("edit");

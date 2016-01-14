@@ -68,7 +68,8 @@
 
 </h:head>
 <h:body styleClass="page-header-fixed">
-	<f:event listener="#{loginController.verifyLogin()}" type="preRenderView"></f:event>
+	<f:event listener="#{loginController.verifyLogin()}"
+		type="preRenderView"></f:event>
 
 	<div class="overlay"></div>
 	<form class="search-form" action="#" method="get">
@@ -242,10 +243,12 @@
 	<div class="page-sidebar sidebar">
 		<div class="page-sidebar-inner slimscroll">
 			<ul class="menu accordion-menu">
-				<li class="active"><a href="index.xhtml"
+				<!-- 
+				 <li class="active"><a href="index.xhtml"
 					class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-home"></span>
 						<p>Dashboard</p></a></li>
+				 -->
 				<li><a href="staff.xhtml" class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-user"></span>
 						<p>Staff</p></a></li>
@@ -255,7 +258,8 @@
 				<li><a href="course.xhtml" class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-th"></span>
 						<p>Course</p></a></li>
-				<li><a href="newperform.xhtml" class="waves-effect waves-button"><span
+				<li><a href="newperform.xhtml"
+					class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-paperclip"></span>
 						<p>New Perform</p></a></li>
 				<li><a href="courseregister.xhtml"
@@ -275,11 +279,11 @@
 	<!-- Page Sidebar -->
 	<div class="page-inner">
 		<div class="page-title">
-			<h3>Dashboard</h3>
+			<h3>#{regular.title()}</h3>
 			<div class="page-breadcrumb">
 				<ol class="breadcrumb">
-					<li><a href="index.xhtml">Home</a></li>
-					<li class="active">Dashboard</li>
+					<li><a href="">Home</a></li>
+					<li class="active">#{regular.title()}</li>
 				</ol>
 			</div>
 		</div>
@@ -321,8 +325,10 @@
 	<script src="assets/js/modern.min.js"></script>
 
 	<script src="assets/plugins/summernote-master/summernote.min.js"></script>
+	<!-- 
 	<script
 		src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	 -->
 	<script src="assets/js/pages/form-elements.js"></script>
 	<!-- <script src="assets/js/pages/dashboard.js"></script> -->
 

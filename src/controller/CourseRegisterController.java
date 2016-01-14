@@ -30,6 +30,7 @@ public class CourseRegisterController {
 		externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		sessionMap = externalContext.getSessionMap();
 		params = externalContext.getRequestParameterMap();
+		sessionMap.put("title", "Student Register Course");
 		if (!SessionModel.isPostback()) {
 			String paramAdd = params.get("add");
 			String paramEdit = params.get("edit");

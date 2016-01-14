@@ -1,7 +1,13 @@
 package controller;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "regular")
 @SessionScoped
@@ -25,6 +31,18 @@ public class Regular {
 
 	public String getRegexEmail() {
 		return regexEmail;
+	}
+
+	public String toDay() {
+		return new java.text.SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());
+	}
+
+	public String title() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		if (sessionMap.get("title") != null)
+			return (String) sessionMap.get("title");
+		return new java.text.SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());
 	}
 
 }

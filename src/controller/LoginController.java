@@ -57,7 +57,7 @@ public class LoginController {
 		if (!FacesContext.getCurrentInstance().isPostback()) {
 			// if (sessionMap.get("user") != null)
 			if (this.isLogin)
-				externalContext.redirect("index.xhtml");
+				externalContext.redirect("staff.xhtml");
 			System.out.println("checkIsLogin");
 		}
 	}
@@ -96,7 +96,7 @@ public class LoginController {
 				Role role = _staff.getRole();
 				sessionMap.put("role", role);
 				this.isLogin = true;
-				externalContext.redirect("index.xhtml");
+				externalContext.redirect("staff.xhtml");
 			} else {
 				this.notice = "Username or password invalid";
 				this.staff.setPassword(null);

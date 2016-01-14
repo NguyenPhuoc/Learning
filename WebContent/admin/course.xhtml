@@ -134,7 +134,6 @@
 										autocomplete="off" styleClass="form-control" maxlength="100"
 										required="true" requiredMessage="Invalid name"
 										validatorMessage="Invalid name" id="_name">
-										<f:validateRegex pattern="#{regular.regexContentMail}" />
 										<f:validateLength maximum="100" />
 									</h:inputText>
 									<h:message for="_name" />
@@ -149,7 +148,6 @@
 										styleClass="form-control" rows="5" required="true"
 										requiredMessage="Invalid detail"
 										validatorMessage="Invalid detail,[a-z , . /]" id="_detail">
-										<f:validateRegex pattern="#{regular.regexContentMail}" />
 
 									</h:inputTextarea>
 									<h:message for="_detail" />
@@ -163,7 +161,9 @@
 									<p:calendar styleClass="cld"
 										value="#{courseController._course.startDate}"
 										requiredMessage="Invalid Date" required="true"
-										pattern="MM/dd/yyyy" placeholder="mm/dd/yyyy" id="_startDate"></p:calendar>
+										mindate="#{regular.toDay()}" pattern="MM/dd/yyyy"
+										placeholder="mm/dd/yyyy" id="_startDate">
+									</p:calendar>
 									<h:message for="_startDate" />
 								</div>
 							</div>
@@ -175,7 +175,9 @@
 									<p:calendar styleClass="cld"
 										value="#{courseController._course.endDate}"
 										requiredMessage="Invalid Date" required="true"
-										pattern="MM/dd/yyyy" placeholder="mm/dd/yyyy" id="_endDate"></p:calendar>
+										mindate="#{regular.toDay()}" pattern="MM/dd/yyyy"
+										placeholder="mm/dd/yyyy" id="_endDate">
+									</p:calendar>
 									<h:message for="_endDate" />
 								</div>
 							</div>
@@ -219,7 +221,6 @@
 										autocomplete="off" styleClass="form-control" maxlength="100"
 										required="true" requiredMessage="Invalid name"
 										validatorMessage="Invalid name" id="name">
-										<f:validateRegex pattern="#{regular.regexContentMail}" />
 										<f:validateLength maximum="100" />
 									</h:inputText>
 									<h:message for="name" />
@@ -234,7 +235,6 @@
 										styleClass="form-control" rows="5" required="true"
 										requiredMessage="Invalid detail"
 										validatorMessage="Invalid detail,[a-z , . /]" id="detail">
-										<f:validateRegex pattern="#{regular.regexContentMail}" />
 									</h:inputTextarea>
 									<h:message for="detail" />
 								</div>
@@ -350,7 +350,8 @@
 										<p:calendar styleClass="cld"
 											value="#{courseController._assignment.endDate}"
 											requiredMessage="Invalid Date" required="true"
-											placeholder="mm/dd/yyyy" pattern="MM/dd/yyyy" id="_endDateA"></p:calendar>
+											mindate="#{regular.toDay()}" placeholder="mm/dd/yyyy"
+											pattern="MM/dd/yyyy" id="_endDateA"></p:calendar>
 										<h:message for="_endDateA" />
 									</div>
 								</div>
@@ -456,7 +457,8 @@
 										<p:calendar styleClass="cld"
 											value="#{courseController.assignment.endDate}"
 											requiredMessage="Invalid Date" required="true"
-											placeholder="mm/dd/yyyy" pattern="MM/dd/yyyy" id="endDateA"></p:calendar>
+											mindate="#{regular.toDay()}" placeholder="mm/dd/yyyy"
+											pattern="MM/dd/yyyy" id="endDateA"></p:calendar>
 										<h:message for="endDateA" />
 									</div>
 								</div>

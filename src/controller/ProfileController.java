@@ -125,6 +125,7 @@ public class ProfileController implements Serializable {
 		externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		sessionMap = externalContext.getSessionMap();
 		params = externalContext.getRequestParameterMap();
+		sessionMap.put("title", "Profile");
 		if (sessionMap.get("user") != null) {
 			staff = (Staff) sessionMap.get("user");
 			_staff.setEmail(staff.getEmail());

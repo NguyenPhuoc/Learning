@@ -1,7 +1,11 @@
 package controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +32,9 @@ public class CourseController {
 	private Map<String, String> params = externalContext.getRequestParameterMap();
 
 	public void init() {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		sessionMap.put("title", "Course");
 		if (!SessionModel.isPostback()) {
 			String paramAdd = params.get("add");
 			String paramEdit = params.get("edit");
@@ -152,26 +159,39 @@ public class CourseController {
 			addErrA = "none";
 	}
 
-	public void save() {
-		try {
-			new CourseModel().create(_course);
-			_course = new Course();
-			sessionMap.put("addSuc", true);
-			externalContext.redirect("course.xhtml?add=course");
-		} catch (Exception e) {
+	public void save() throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		String string = formatter.format(Calendar.getInstance().getTime());
+		Date today = formatter.parse(string);
+		if ((today.equals(_course.getStartDate()) || today.before(_course.getStartDate()))
+				&& _course.getStartDate().before(_course.getEndDate())) {
+			try {
+				new CourseModel().create(_course);
+				_course = new Course();
+				sessionMap.put("addSuc", true);
+				externalContext.redirect("course.xhtml?add=course");
+			} catch (Exception e) {
+				sessionMap.put("addErr", true);
+				System.out.println("catch save faq");
+			}
+		} else {
+
 			sessionMap.put("addErr", true);
-			System.out.println("catch save faq");
 		}
 	}
 
 	public void saveChange() {
-		try {
-			new CourseModel().update(course);
-			sessionMap.put("editSuc", true);
-			externalContext.redirect("course.xhtml?edit=" + course.getId());
-		} catch (Exception e) {
+		if (course.getStartDate().before(course.getEndDate())) {
+			try {
+				new CourseModel().update(course);
+				sessionMap.put("editSuc", true);
+				externalContext.redirect("course.xhtml?edit=" + course.getId());
+			} catch (Exception e) {
+				sessionMap.put("editErr", true);
+				System.out.println("catch save change course");
+			}
+		} else {
 			sessionMap.put("editErr", true);
-			System.out.println("catch save change course");
 		}
 	}
 
@@ -214,21 +234,27 @@ public class CourseController {
 		}
 	}
 
-	public void saveAss() {
-		try {
-			_assignment.setFile(new UploadHelper().processUpload(this.p));
-			_assignment.setCourse(course);
-			if (!_assignment.getFile().equals("nofile")) {
-				new AssignmentModel().create(_assignment);
-				sessionMap.put("addSucA", true);
-				_assignment = new Assignment();
-				externalContext.redirect("course.xhtml?edit=" + course.getId());
+	public void saveAss() throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		String string = formatter.format(Calendar.getInstance().getTime());
+		Date today = formatter.parse(string);
+		if (today.equals(_assignment.getEndDate()) || today.before(_assignment.getEndDate())) {
+			try {
+				_assignment.setFile(new UploadHelper().processUpload(this.p));
+				_assignment.setCourse(course);
+				if (!_assignment.getFile().equals("nofile")) {
+					new AssignmentModel().create(_assignment);
+					sessionMap.put("addSucA", true);
+					_assignment = new Assignment();
+					externalContext.redirect("course.xhtml?edit=" + course.getId());
+				}
+			} catch (Exception e) {
+				sessionMap.put("addErrA", true);
+				System.out.println("catch add  Asss");
 			}
-		} catch (Exception e) {
+		} else {
 			sessionMap.put("addErrA", true);
-			System.out.println("catch add  Asss");
 		}
-		System.out.println(_assignment.getFile());
 	}
 
 	public String getTableTag() {

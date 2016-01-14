@@ -30,6 +30,10 @@ public class NewPerform {
 	private Map<String, String> params = externalContext.getRequestParameterMap();
 
 	public void init() {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
+		sessionMap.put("title", "New Perform");
 		if (!SessionModel.isPostback()) {
 			String paramSetS = params.get("sets");
 			String paramSetA = params.get("seta");

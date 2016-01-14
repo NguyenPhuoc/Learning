@@ -37,6 +37,10 @@ import com.sun.mail.imap.IMAPStore;
 @SessionScoped
 public class FeedbackController {
 	public void init() {
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
+		sessionMap.put("title", "Feedback");
 		if (!SessionModel.isPostback()) {
 			String paramView = params.get("view");
 			String paramDel = params.get("del");
@@ -149,7 +153,7 @@ public class FeedbackController {
 		String username = "pharmacyeproject";
 		String password = "e123456780";
 		String from = "pharmacyeproject@gmail.com";
-		String to = "hailua5gs@gmail.com";
+		String to = feedback.getEmail();
 
 		try {
 			Properties props = new Properties();

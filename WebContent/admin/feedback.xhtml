@@ -48,6 +48,7 @@
 								</h:column>
 								<h:column>
 									<f:facet name="header">Option</f:facet>
+									<h:panelGroup rendered="#{fb.status==0}"><b style="color: red;">New </b></h:panelGroup>
 									<a href="?view=#{fb.id}">view</a>
 								</h:column>
 							</h:dataTable>

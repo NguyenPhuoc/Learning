@@ -23,7 +23,10 @@ public class StaffController {
 	private Map<String, String> params = externalContext.getRequestParameterMap();
 
 	public void init() {
-		System.out.println("StaffController.init()");
+		externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		sessionMap = externalContext.getSessionMap();
+		params = externalContext.getRequestParameterMap();
+		sessionMap.put("title", "Staff");
 		if (!SessionModel.isPostback()) {
 			String paramAdd = params.get("add");
 			String paramEdit = params.get("edit");
